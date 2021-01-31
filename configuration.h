@@ -15,6 +15,9 @@ const int SERIAL_BAUDIOS = 115200;
 #define TOKEN               "CQwX8e4u7tCveJAPvz5b"
 #define THINGSBOARD_SERVER  "iot.etsisi.upm.es"
 
+//delay de envio 30 seg
+int envio=60;
+
 //Fuentes para la pantalla
 extern uint8_t SmallFont[];// Selecciono el tamaño de fuente para los textos es necesario declararlo 
 extern uint8_t TinyFont[];// Selecciono el tamaño de fuente para los textos es necesario declararlo 

@@ -18,7 +18,8 @@ int status = WL_IDLE_STATUS;
 #define WIFI_AP             "Jl"
 #define WIFI_PASSWORD       "lolwifigratis"
 int pinInternet=13;
-
+boolean internetActivo= false;
+boolean thingsboardActivo=false;
 
 SCD30 airSensor;
 
@@ -27,7 +28,7 @@ int lightValue=0;
 
 OLED  pantalla(SDA, SCL, 8);// inicializamos la pantalla OLED
 
-
+int momentoActual=0;
 
 void setup()
 { 
@@ -36,7 +37,7 @@ void setup()
   
   startDisplay();
 
-  conectWiFi(); 
+  conectIOT(); 
   
   Wire.begin();
   if (airSensor.begin() == false)
@@ -52,24 +53,13 @@ void setup()
 
 void loop () {
   
-  if (WiFi.status() != WL_CONNECTED) {
+  if (WiFi.status() != WL_CONNECTED || !tb.connected()) {
     digitalWrite(pinInternet,LOW);
-    conectWiFi();
+    conectIOT();
   }else{
     digitalWrite(pinInternet,HIGH);
-  }
-
-
-  if (!tb.connected()) {
-    // Connect to the ThingsBoard
-    Serial.print("Connecting to: ");
-    Serial.print(THINGSBOARD_SERVER);
-    Serial.print(" with token ");
-    Serial.println(TOKEN);
-    if (!tb.connect(THINGSBOARD_SERVER, TOKEN)) {
-      Serial.println("Failed to connect");
-      //return;
-    }
+    internetActivo=true;
+    thingsboardActivo=true;
   }
   
   int newLight=analogRead(LIGH_SENSOR);
@@ -88,20 +78,26 @@ void loop () {
     pantalla.print("Humidity: ", LEFT,20);
     pantalla.printNumI(airSensor.getHumidity(),RIGHT,20);//el numero anterior ocupa 24 pixels de alto por lo que este debe empezar a partir del 25
     
-    pantalla.print("Enviando datos", LEFT,40);
-
     pantalla.update();// actualiza la pantalla
-        
+  }
+  Serial.println(momentoActual);
+  if(thingsboardActivo && momentoActual==envio)
+  {
+    Serial.println("ENVIO");
+    pantalla.print("Enviando datos", LEFT,40);
+    pantalla.update();// actualiza la pantalla
     tb.sendTelemetryInt("co2", airSensor.getCO2());
     tb.sendTelemetryInt("temperature", airSensor.getTemperature());
     tb.sendTelemetryInt("humidity", airSensor.getHumidity());
     tb.sendTelemetryInt("light", newLight);
-
+    delay(1000);
+    momentoActual=0;
   }
+  momentoActual++;
   delay(500);
 }
 
-void conectWiFi()
+void conectIOT()
 {  
   WiFi.begin(WIFI_AP, WIFI_PASSWORD);
   if(WiFi.status() != WL_CONNECTED) {
@@ -110,24 +106,16 @@ void conectWiFi()
     while(i<5 && WiFi.status() != WL_CONNECTED)
     {
       i++;
-      delay(1000);
+      delay(100);
     }
   }else{
     digitalWrite(pinInternet,HIGH);
-  }
-}
-
-void reconnect() {
-  // Loop until we're reconnected
-  status = WiFi.status();
-  if ( status != WL_CONNECTED) {
-    WiFi.begin(WIFI_AP, WIFI_PASSWORD);
-    if(WiFi.status() != WL_CONNECTED) {
-      Serial.println("NOOOOO2");
-      digitalWrite(pinInternet,LOW);
-    }else{
-      Serial.println("WIIII2");
-      digitalWrite(pinInternet,HIGH);
+    if (!tb.connected()){
+      if (!tb.connect(THINGSBOARD_SERVER, TOKEN)) {
+        thingsboardActivo=false;
+      }else{
+        thingsboardActivo=true;
+      }
     }
   }
 }
@@ -136,7 +124,7 @@ void startDisplay()
 {
   pantalla.begin();//inicializa el display OLED
   pantalla.setFont(SmallFont);//seteo el tamaño de la fuente
-  pantalla.print("BIENVENIDO", CENTER, 0);//imprime la frase en el centro de la zona superior
+  pantalla.print("BIENVENIDO", CENTER, 28);//imprime la frase en el centro de la zona superior
   pantalla.update();// actualiza la pantalla
   delay(1000);
   pantalla.drawBitmap(0,0,LOGO,128,64);
