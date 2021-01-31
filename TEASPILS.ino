@@ -4,6 +4,8 @@
 #include "SparkFun_SCD30_Arduino_Library.h" //Click here to get the library: http://librarymanager/All#SparkFun_SCD30
 #include "ThingsBoard.h"
 #include <WiFi.h>
+#include <SPI.h>
+#include <SD.h>
 
 //thingsboard
 // Initialize ThingsBoard client
@@ -21,6 +23,10 @@ int pinInternet=13;
 boolean internetActivo= false;
 boolean thingsboardActivo=false;
 
+boolean sdActiva=false;
+File logData;
+int hora=0;
+
 SCD30 airSensor;
 
 int LIGH_SENSOR=32;
@@ -36,7 +42,13 @@ void setup()
   pinMode(pinInternet,OUTPUT);
   
   startDisplay();
-
+  if (!SD.begin(5))
+  {
+    sdActiva=false;
+  }else{
+    sdActiva=true;
+    logData = SD.open("/log.txt", FILE_WRITE);
+  }
   conectIOT(); 
   
   Wire.begin();
@@ -65,18 +77,30 @@ void loop () {
   int newLight=analogRead(LIGH_SENSOR);
   if (airSensor.dataAvailable() || newLight!=lightValue)
   {
+    logData.print("Momento actual--> ");
+    logData.println(hora);
     pantalla.clrScr(); // borra la pantalla
     pantalla.print("Light: ", LEFT,30);
     pantalla.printNumI(newLight,RIGHT,30);//el numero anterior ocupa 24 pixels de alto por lo que este debe empezar a partir del 25
+    logData.print("Luz: ");
+    logData.println(newLight);
     
     pantalla.print("CO2: ",LEFT,0);
     pantalla.printNumI(airSensor.getCO2(),RIGHT,0);
+    logData.print("CO2: ");
+    logData.println(airSensor.getCO2());
     
     pantalla.print("Temperature: ",LEFT,10);
     pantalla.printNumI(airSensor.getTemperature(),RIGHT,10);//el numero anterior ocupa 24 pixels de alto por lo que este debe empezar a partir del 25
+    logData.print("Temperature: ");
+    logData.println(airSensor.getTemperature());
     
     pantalla.print("Humidity: ", LEFT,20);
     pantalla.printNumI(airSensor.getHumidity(),RIGHT,20);//el numero anterior ocupa 24 pixels de alto por lo que este debe empezar a partir del 25
+    logData.print("Humidity: ");
+    logData.println(airSensor.getHumidity());
+
+    logData.flush();
     
     pantalla.update();// actualiza la pantalla
   }
@@ -94,6 +118,7 @@ void loop () {
     momentoActual=0;
   }
   momentoActual++;
+  hora++;
   delay(500);
 }
 
@@ -132,3 +157,19 @@ void startDisplay()
   delay(3000);
   pantalla.clrScr(); // borra la pantalla
 }
+
+/*String date(){
+ 
+  char fecha[19];
+  DateTime now = RTC.now(); //Obtener fecha y hora actual.
+
+  int dia = now.day();
+  int mes = now.month();
+  int anio = now.year();
+  int hora = now.hour();
+  int minuto = now.minute();
+  int segundo = now.second();
+
+  sprintf( fecha, "%.2d.%.2d.%.4d %.2d:%.2d:%.2d", dia, mes, anio, hora, minuto, segundo);
+  return String( fecha );
+}*/
