@@ -6,6 +6,7 @@
 #include <WiFi.h>
 #include <SPI.h>
 #include <SD.h>
+#include "RTClib.h"
 
 //thingsboard
 // Initialize ThingsBoard client
@@ -19,10 +20,14 @@ int status = WL_IDLE_STATUS;
 
 #define WIFI_AP             "Jl"
 #define WIFI_PASSWORD       "lolwifigratis"
-int pinInternet=13;
+int pinInternet=4;
 boolean internetActivo= false;
 boolean thingsboardActivo=false;
+int pinThingsboard=16;
 
+RTC_DS3231 rtc;
+
+int pinSD=17;
 boolean sdActiva=false;
 File logData;
 int hora=0;
@@ -40,15 +45,31 @@ void setup()
 { 
   Serial.begin(115200);
   pinMode(pinInternet,OUTPUT);
+  pinMode(pinThingsboard,OUTPUT);
+  pinMode(pinSD,OUTPUT);
   
   startDisplay();
   if (!SD.begin(5))
   {
-    sdActiva=false;
-  }else{
-    sdActiva=true;
-    logData = SD.open("/log.txt", FILE_WRITE);
+    sdActiva=false;  
+    digitalWrite(pinSD,HIGH);    
+    pantalla.clrScr(); // borra la pantalla    pantalla.print(" Hay un ", CENTER, 0);//imprime la frase en el centro de la zona superior
+    pantalla.print("Problema", CENTER, 10);//imprime la frase en el centro de la zona superior
+    pantalla.print("en la SD", CENTER, 20);//imprime la frase en el centro de la zona superior
+    pantalla.update();
+    while(!SD.begin(5));
+    
   }
+  
+    sdActiva=true;
+    digitalWrite(pinSD,LOW);    
+    logData = SD.open("/log.txt", FILE_WRITE);
+ 
+
+  //delay(10000);
+  //SD.end();
+  //while(SD.begin(5))Serial.println("WIIII");
+  
   conectIOT(); 
   
   Wire.begin();
@@ -61,15 +82,45 @@ void setup()
     pantalla.update();// actualiza la pantalla    
     while (1);
   }
+
+  if (!rtc.begin()) {
+    Serial.println(F("Couldn't find RTC"));
+    while (1);
+  }
+  Serial.println("TODO OK");
+  // Si se ha perdido la corriente, fijar fecha y hora
+  if (rtc.lostPower()) {
+    // Fijar a fecha y hora de compilacion
+    rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
+    
+    // Fijar a fecha y hora específica. En el ejemplo, 21 de Enero de 2016 a las 03:00:00
+    // rtc.adjust(DateTime(2016, 1, 21, 3, 0, 0));
+  }
+  
 }
 
 void loop () {
+  SD.end();
+  if (SD.begin(5))
+  {
+    sdActiva=true;
+    digitalWrite(pinSD,LOW);    
+    logData = SD.open("/log.txt", FILE_WRITE);
+  }else{
+    sdActiva=false;  
+    digitalWrite(pinSD,HIGH);    
+    pantalla.clrScr(); // borra la pantalla    pantalla.print(" Hay un ", CENTER, 0);//imprime la frase en el centro de la zona superior
+    pantalla.print("Problema", CENTER, 10);//imprime la frase en el centro de la zona superior
+    pantalla.print("en la SD", CENTER, 20);//imprime la frase en el centro de la zona superior
+    pantalla.update();
+    while(!SD.begin(5));
+  }
   
   if (WiFi.status() != WL_CONNECTED || !tb.connected()) {
-    digitalWrite(pinInternet,LOW);
+    digitalWrite(pinInternet,HIGH);
     conectIOT();
   }else{
-    digitalWrite(pinInternet,HIGH);
+    digitalWrite(pinInternet,LOW);
     internetActivo=true;
     thingsboardActivo=true;
   }
@@ -77,8 +128,7 @@ void loop () {
   int newLight=analogRead(LIGH_SENSOR);
   if (airSensor.dataAvailable() || newLight!=lightValue)
   {
-    logData.print("Momento actual--> ");
-    logData.println(hora);
+    logData.println(completeDate());
     pantalla.clrScr(); // borra la pantalla
     pantalla.print("Light: ", LEFT,30);
     pantalla.printNumI(newLight,RIGHT,30);//el numero anterior ocupa 24 pixels de alto por lo que este debe empezar a partir del 25
@@ -104,7 +154,7 @@ void loop () {
     
     pantalla.update();// actualiza la pantalla
   }
-  Serial.println(momentoActual);
+
   if(thingsboardActivo && momentoActual==envio)
   {
     Serial.println("ENVIO");
@@ -117,16 +167,22 @@ void loop () {
     delay(1000);
     momentoActual=0;
   }
-  momentoActual++;
   hora++;
   delay(500);
+}
+
+String completeDate()
+{
+  DateTime date = rtc.now();
+  String date2=String(date.year())+'/'+String(date.month())+'/'+String(date.day())+' '+String(date.hour())+':'+String(date.minute())+':'+String(date.second());
+  return date2;
 }
 
 void conectIOT()
 {  
   WiFi.begin(WIFI_AP, WIFI_PASSWORD);
   if(WiFi.status() != WL_CONNECTED) {
-    digitalWrite(pinInternet,LOW);
+    digitalWrite(pinInternet,HIGH);
     int i=0;
     while(i<5 && WiFi.status() != WL_CONNECTED)
     {
@@ -134,12 +190,14 @@ void conectIOT()
       delay(100);
     }
   }else{
-    digitalWrite(pinInternet,HIGH);
+    digitalWrite(pinInternet,LOW);
     if (!tb.connected()){
       if (!tb.connect(THINGSBOARD_SERVER, TOKEN)) {
         thingsboardActivo=false;
+        digitalWrite(pinThingsboard,HIGH);
       }else{
         thingsboardActivo=true;
+        digitalWrite(pinThingsboard,LOW);
       }
     }
   }
