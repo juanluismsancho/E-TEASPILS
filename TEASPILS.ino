@@ -15,11 +15,11 @@ WiFiClient espClient;
 ThingsBoard tb(espClient);
 // the Wifi radio's status
 int status = WL_IDLE_STATUS;
-#define TOKEN               "CQwX8e4u7tCveJAPvz5b"
-#define THINGSBOARD_SERVER  "iot.etsisi.upm.es"
+#define TOKEN               "Token"
+#define THINGSBOARD_SERVER  "SERVIDOR "
 
-#define WIFI_AP             "Jl"
-#define WIFI_PASSWORD       "lolwifigratis"
+#define WIFI_AP             "WIFI"
+#define WIFI_PASSWORD       "PASS"
 int pinInternet=4;
 boolean internetActivo= false;
 boolean thingsboardActivo=false;

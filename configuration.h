@@ -8,12 +8,12 @@ int mqtt_service_port = 1883;
 const int SERIAL_BAUDIOS = 115200;
 
 // datos de conexión WiFi ()
-//char *WIFI_AP = "SBC"; // SSID de la WiFi
-//char *WIFI_PASSWORD = "sbc$18-maceta"; // PASSWORD de la WiFi
+//char *WIFI_AP = "wifi"; // SSID de la WiFi
+//char *WIFI_PASSWORD = "wifi pass"; // PASSWORD de la WiFi
 
 //datos thingsboard
-#define TOKEN               "CQwX8e4u7tCveJAPvz5b"
-#define THINGSBOARD_SERVER  "iot.etsisi.upm.es"
+#define TOKEN               "token"
+#define THINGSBOARD_SERVER  "Servidor"
 
 //delay de envio 30 seg
 int envio=60;
