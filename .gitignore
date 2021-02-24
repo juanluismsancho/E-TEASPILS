@@ -31,4 +31,5 @@
 *.out
 *.app
 
-# Test. Esto es una prueba
+# Credentials fils
+credentials.h
