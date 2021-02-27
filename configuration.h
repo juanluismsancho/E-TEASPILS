@@ -7,16 +7,31 @@ int mqtt_service_port = 1883;
 // velocidad a la que se comunicará con un puerto serie
 const int SERIAL_BAUDIOS = 115200;
 
-// datos de conexión WiFi ()
-//char *WIFI_AP = "wifi"; // SSID de la WiFi
-//char *WIFI_PASSWORD = "wifi pass"; // PASSWORD de la WiFi
+String LogInitialMessage="Version 1.0 26/02/2021 Juan Luis Moreno Sancho\nValores actuales de configuracion:\nclave1 [valor1]\nclave2 [valor2]\n...\nclaven [valorn]\ndate;sensorid;value";
 
-//datos thingsboard
-#define TOKEN               "token"
-#define THINGSBOARD_SERVER  "Servidor"
+String CO2_ID = "co2_X21";
+String Humidity_ID = "humidit_r6h3y";
+String Temp_ID = "temp_s213";
+String Light_ID = "light_d2q11";
+String Loudness_ID = "loudness_xx11";
+String SoilHumidity_ID = "soilhumid_cc99r";
 
+
+//cadencia por sensor
+int light = 1;
+int air = 1;
+int soilHumidity = 1;
+int loudness = 1;
+
+int LIGHT_SENSOR_PIN = 32;
+int SOILHUMIDITY_SENSOR_PIN = 34;
+int LOUDNESS_SENSOR_PIN = 35;
 //delay de envio 30 seg
 int envio=60;
+
+//cambio de dato en modo carrusel
+boolean carruselON=false;
+int cambio=3000;
 
 //Fuentes para la pantalla
 extern uint8_t SmallFont[];// Selecciono el tamaño de fuente para los textos es necesario declararlo 
