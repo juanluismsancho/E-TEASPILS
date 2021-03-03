@@ -24,7 +24,7 @@ int soilHumidity = 1;
 int loudness = 1;
 
 int LIGHT_SENSOR_PIN = 32;
-int SOILHUMIDITY_SENSOR_PIN = 34;
+int SOILHUMIDITY_SENSOR_PIN = 36;
 int LOUDNESS_SENSOR_PIN = 35;
 //delay de envio 30 seg
 int envio=60;
