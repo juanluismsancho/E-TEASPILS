@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">TEASPIL</string>
+    <string name="strconten">Descargar Log</string>
+    <string name="strLeer">Mostrar archivo</string>
+    <string name="strDesconectar">Desconectar</string>
+    <string name="strresp">Respuesta</string>
+    <string name="dispositivos_vinculados">DISPOSITIVOS VINCULADOS</string>
+</resources>
