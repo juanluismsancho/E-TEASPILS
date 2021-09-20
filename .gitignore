@@ -32,4 +32,4 @@
 *.app
 
 # Credentials fils
-#credentials.h
+credentials.h
