@@ -18,10 +18,9 @@
 #define WIFI_NAME "Jl"                // wifi
 #define WIFI_PASSWORD "lolwifigratis" // wifipass
 
-//Borrable?
-int pinInternet = 4; 
+// Borrable?
+int pinInternet = 4;
 boolean internetActivo = false;
-
 
 // thingsboard
 #define TOKEN tokenDevice
@@ -29,8 +28,8 @@ boolean internetActivo = false;
 WiFiClient espClient;
 ThingsBoard tb(espClient);
 int status = WL_IDLE_STATUS;
-boolean thingsboardActivo = false;    //Borrables. No se hace ninguna comprobacion o consulta de estas variables
-int pinThingsboard = 16;              //Borrables
+boolean thingsboardActivo = false; // Borrables. No se hace ninguna comprobacion o consulta de estas variables
+int pinThingsboard = 16;           // Borrables
 
 // telegram
 #define BOT_TOKEN tokenBot
