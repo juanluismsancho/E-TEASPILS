@@ -1,0 +1,141 @@
+{
+  "widget": {
+    "isSystemType": true,
+    "bundleAlias": "digital_gauges",
+    "typeAlias": "digital_bar",
+    "type": "latest",
+    "title": "New widget",
+    "image": null,
+    "description": null,
+    "sizeX": 6,
+    "sizeY": 2.5,
+    "config": {
+      "datasources": [
+        {
+          "type": "entity",
+          "name": null,
+          "entityAliasId": "5d42fd81-3cc7-d7a3-977d-d6cf1a4e8f40",
+          "filterId": null,
+          "dataKeys": [
+            {
+              "name": "temperature",
+              "type": "timeseries",
+              "label": "temperature",
+              "color": "#2196f3",
+              "settings": {},
+              "_hash": 0.8958903501893263
+            }
+          ]
+        }
+      ],
+      "timewindow": {
+        "realtime": {
+          "timewindowMs": 60000
+        }
+      },
+      "showTitle": false,
+      "backgroundColor": "#ffffff",
+      "color": "rgba(0,0,0,0.87)",
+      "padding": "0px",
+      "settings": {
+        "maxValue": 50,
+        "minValue": 0,
+        "donutStartAngle": 90,
+        "showValue": true,
+        "showMinMax": true,
+        "gaugeWidthScale": 1,
+        "levelColors": [
+          "#0066ff",
+          "#07ff00",
+          "#ff0000"
+        ],
+        "titleFont": {
+          "family": "Roboto",
+          "size": 12,
+          "style": "oblique",
+          "weight": "500"
+        },
+        "labelFont": {
+          "family": "Roboto",
+          "size": 8,
+          "style": "normal",
+          "weight": "500"
+        },
+        "valueFont": {
+          "family": "Roboto",
+          "style": "normal",
+          "weight": "500",
+          "size": 18,
+          "color": "#3c3c3c"
+        },
+        "minMaxFont": {
+          "family": "Roboto",
+          "size": 8,
+          "style": "normal",
+          "weight": "500",
+          "color": "#828282"
+        },
+        "neonGlowBrightness": 0,
+        "dashThickness": 1,
+        "unitTitle": "ºC",
+        "showUnitTitle": true,
+        "gaugeColor": "#000000",
+        "gaugeType": "horizontalBar",
+        "showTitle": true,
+        "animation": true,
+        "animationDuration": 500,
+        "animationRule": "linear",
+        "timestampFormat": "yyyy-MM-dd HH:mm:ss",
+        "title": "Ambient Temperature",
+        "defaultColor": "#009dff",
+        "roundedLineCap": false,
+        "showTimestamp": false,
+        "useFixedLevelColor": false,
+        "showTicks": false
+      },
+      "title": "Temperature",
+      "dropShadow": true,
+      "enableFullscreen": true,
+      "titleStyle": {
+        "fontSize": "16px",
+        "fontWeight": 400
+      },
+      "widgetStyle": {},
+      "useDashboardTimewindow": true,
+      "showLegend": false,
+      "actions": {},
+      "enableDataExport": true,
+      "decimals": 0,
+      "noDataDisplayMessage": "",
+      "units": "º",
+      "widgetCss": ""
+    },
+    "row": 0,
+    "col": 0,
+    "id": "8ce64b77-df99-bdc8-3449-3c2b1e3a1832"
+  },
+  "aliasesInfo": {
+    "datasourceAliases": {
+      "0": {
+        "alias": "TeaSpike",
+        "filter": {
+          "type": "singleEntity",
+          "resolveMultiple": false,
+          "singleEntity": {
+            "entityType": "DEVICE",
+            "id": "d170e200-836e-11ec-9cdc-97964cc3249d"
+          }
+        }
+      }
+    },
+    "targetDeviceAliases": {}
+  },
+  "filtersInfo": {
+    "datasourceFilters": {}
+  },
+  "originalSize": {
+    "sizeX": 8,
+    "sizeY": 3
+  },
+  "originalColumns": 24
+}

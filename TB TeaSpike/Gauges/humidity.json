@@ -1,0 +1,211 @@
+{
+  "widget": {
+    "isSystemType": true,
+    "bundleAlias": "digital_gauges",
+    "typeAlias": "digital_bar",
+    "type": "latest",
+    "title": "New widget",
+    "image": null,
+    "description": null,
+    "sizeX": 6,
+    "sizeY": 2.5,
+    "config": {
+      "datasources": [
+        {
+          "type": "entity",
+          "name": null,
+          "entityAliasId": "5d42fd81-3cc7-d7a3-977d-d6cf1a4e8f40",
+          "filterId": null,
+          "dataKeys": [
+            {
+              "name": "humidity",
+              "type": "timeseries",
+              "label": "humidity",
+              "color": "#2196f3",
+              "settings": {},
+              "_hash": 0.8273655709196326
+            }
+          ]
+        }
+      ],
+      "timewindow": {
+        "realtime": {
+          "timewindowMs": 60000
+        }
+      },
+      "showTitle": false,
+      "backgroundColor": "#ffffff",
+      "color": "#000000",
+      "padding": "0px",
+      "settings": {
+        "maxValue": 100,
+        "minValue": 0,
+        "donutStartAngle": 90,
+        "showValue": true,
+        "showMinMax": true,
+        "gaugeWidthScale": 1,
+        "levelColors": [
+          "#000000",
+          "#3cfb2d",
+          "#f44336"
+        ],
+        "titleFont": {
+          "family": "Roboto",
+          "size": 12,
+          "style": "oblique",
+          "weight": "500"
+        },
+        "labelFont": {
+          "family": "Roboto",
+          "size": 8,
+          "style": "normal",
+          "weight": "500"
+        },
+        "valueFont": {
+          "family": "Roboto",
+          "style": "normal",
+          "weight": "500",
+          "size": 18,
+          "color": "#4f4f4f"
+        },
+        "minMaxFont": {
+          "family": "Roboto",
+          "size": 8,
+          "style": "normal",
+          "weight": "500",
+          "color": "#989898"
+        },
+        "neonGlowBrightness": 0,
+        "dashThickness": 2,
+        "unitTitle": "%",
+        "showUnitTitle": true,
+        "gaugeColor": "#171a1c",
+        "gaugeType": "horizontalBar",
+        "showTitle": true,
+        "animation": true,
+        "animationDuration": 500,
+        "animationRule": "linear",
+        "timestampFormat": "yyyy-MM-dd HH:mm:ss",
+        "title": "Ambient Humidity",
+        "showTicks": false,
+        "tickWidth": 0,
+        "colorTicks": "#666",
+        "ticksValue": [],
+        "useFixedLevelColor": true,
+        "fixedLevelColors": [
+          {
+            "from": {
+              "valueSource": "predefinedValue",
+              "value": 0
+            },
+            "to": {
+              "valueSource": "predefinedValue",
+              "value": 20
+            },
+            "color": "#fc0000"
+          },
+          {
+            "from": {
+              "valueSource": "predefinedValue",
+              "value": 21
+            },
+            "to": {
+              "valueSource": "predefinedValue",
+              "value": 39
+            },
+            "color": "#fff000"
+          },
+          {
+            "from": {
+              "valueSource": "predefinedValue",
+              "value": 40
+            },
+            "to": {
+              "valueSource": "predefinedValue",
+              "value": 60
+            },
+            "color": "#00ff0f"
+          },
+          {
+            "from": {
+              "valueSource": "predefinedValue",
+              "value": 61
+            },
+            "to": {
+              "valueSource": "predefinedValue",
+              "value": 80
+            },
+            "color": "#00ffff"
+          },
+          {
+            "from": {
+              "valueSource": "predefinedValue",
+              "value": 81
+            },
+            "to": {
+              "valueSource": "predefinedValue",
+              "value": 100
+            },
+            "color": "#000fff"
+          }
+        ],
+        "roundedLineCap": false,
+        "showTimestamp": false
+      },
+      "title": "Humidity",
+      "dropShadow": true,
+      "enableFullscreen": true,
+      "titleStyle": {
+        "fontSize": "16px",
+        "fontWeight": 400
+      },
+      "widgetStyle": {},
+      "useDashboardTimewindow": true,
+      "showLegend": false,
+      "actions": {},
+      "enableDataExport": true,
+      "units": "%",
+      "noDataDisplayMessage": "No response from Sensirion SCD30",
+      "showTitleIcon": false,
+      "titleTooltip": "",
+      "legendConfig": {
+        "direction": "column",
+        "position": "bottom",
+        "sortDataKeys": false,
+        "showMin": false,
+        "showMax": false,
+        "showAvg": false,
+        "showTotal": false
+      },
+      "decimals": 0,
+      "widgetCss": ""
+    },
+    "row": 0,
+    "col": 0,
+    "id": "c2ec93ce-ca04-fd32-cb06-deed633377b0"
+  },
+  "aliasesInfo": {
+    "datasourceAliases": {
+      "0": {
+        "alias": "TeaSpike",
+        "filter": {
+          "type": "singleEntity",
+          "resolveMultiple": false,
+          "singleEntity": {
+            "entityType": "DEVICE",
+            "id": "d170e200-836e-11ec-9cdc-97964cc3249d"
+          }
+        }
+      }
+    },
+    "targetDeviceAliases": {}
+  },
+  "filtersInfo": {
+    "datasourceFilters": {}
+  },
+  "originalSize": {
+    "sizeX": 8,
+    "sizeY": 3
+  },
+  "originalColumns": 24
+}

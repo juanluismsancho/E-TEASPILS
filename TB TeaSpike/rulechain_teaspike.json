@@ -1,0 +1,1136 @@
+{
+  "ruleChain": {
+    "additionalInfo": {
+      "description": "Rulechain for TeaSpike device from TEASPILS project."
+    },
+    "name": "Rulechain TeaSpike",
+    "type": "CORE",
+    "firstRuleNodeId": null,
+    "root": false,
+    "debugMode": false,
+    "configuration": null
+  },
+  "metadata": {
+    "firstNodeIndex": 30,
+    "nodes": [
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 22,
+          "layoutY": 482
+        },
+        "type": "org.thingsboard.rule.engine.transform.TbTransformMsgNode",
+        "name": "New Telegram MSG",
+        "debugMode": false,
+        "configuration": {
+          "jsScript": " var newMsg ={};\r\n newMsg.text = '\"' +  msg.name + '\"' + \" has been triggered in device : \" + '\"' + metadata.deviceName + '\"';\r\n newMsg.chat_id = -675166614; \r\n return {msg: newMsg, metadata: metadata, msgType: msgType};"
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 293,
+          "layoutY": 489
+        },
+        "type": "org.thingsboard.rule.engine.rest.TbRestApiCallNode",
+        "name": "REST API telegram call",
+        "debugMode": false,
+        "configuration": {
+          "restEndpointUrlPattern": "https://api.telegram.org/bot1689745418:AAGRsCUGdaeBbg_fgDpDVIVNn13UliP-rJE/sendMessage",
+          "requestMethod": "POST",
+          "useSimpleClientHttpFactory": false,
+          "ignoreRequestBody": false,
+          "enableProxy": false,
+          "useSystemProxyProperties": false,
+          "proxyScheme": null,
+          "proxyHost": null,
+          "proxyPort": 0,
+          "proxyUser": null,
+          "proxyPassword": null,
+          "readTimeoutMs": 0,
+          "maxParallelRequestsCount": 0,
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "useRedisQueueForMsgPersistence": false,
+          "trimQueue": false,
+          "maxQueueSize": 0,
+          "credentials": {
+            "type": "anonymous"
+          }
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 1038,
+          "layoutY": 488
+        },
+        "type": "org.thingsboard.rule.engine.transform.TbTransformMsgNode",
+        "name": "New Telegram MSG",
+        "debugMode": false,
+        "configuration": {
+          "jsScript": " var newMsg ={};\r\n newMsg.text = '\"' +  msg.name + '\"' + \" has been triggered in device : \" + '\"' + metadata.deviceName + '\"';\r\n newMsg.chat_id = -675166614; \r\n return {msg: newMsg, metadata: metadata, msgType: msgType};"
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 1269,
+          "layoutY": 484
+        },
+        "type": "org.thingsboard.rule.engine.rest.TbRestApiCallNode",
+        "name": "REST API telegram call",
+        "debugMode": false,
+        "configuration": {
+          "restEndpointUrlPattern": "https://api.telegram.org/bot1689745418:AAGRsCUGdaeBbg_fgDpDVIVNn13UliP-rJE/sendMessage",
+          "requestMethod": "POST",
+          "useSimpleClientHttpFactory": false,
+          "ignoreRequestBody": false,
+          "enableProxy": false,
+          "useSystemProxyProperties": false,
+          "proxyScheme": null,
+          "proxyHost": null,
+          "proxyPort": 0,
+          "proxyUser": null,
+          "proxyPassword": null,
+          "readTimeoutMs": 0,
+          "maxParallelRequestsCount": 0,
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "useRedisQueueForMsgPersistence": false,
+          "trimQueue": false,
+          "maxQueueSize": 0,
+          "credentials": {
+            "type": "anonymous"
+          }
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 2169,
+          "layoutY": 516
+        },
+        "type": "org.thingsboard.rule.engine.transform.TbTransformMsgNode",
+        "name": "New Telegram MSG",
+        "debugMode": false,
+        "configuration": {
+          "jsScript": " var newMsg ={};\r\n newMsg.text = '\"' +  msg.name + '\"' + \" has been triggered in device : \" + '\"' + metadata.deviceName + '\"';\r\n newMsg.chat_id = -675166614; \r\n return {msg: newMsg, metadata: metadata, msgType: msgType};"
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 2400,
+          "layoutY": 512
+        },
+        "type": "org.thingsboard.rule.engine.rest.TbRestApiCallNode",
+        "name": "REST API telegram call",
+        "debugMode": false,
+        "configuration": {
+          "restEndpointUrlPattern": "https://api.telegram.org/bot1689745418:AAGRsCUGdaeBbg_fgDpDVIVNn13UliP-rJE/sendMessage",
+          "requestMethod": "POST",
+          "useSimpleClientHttpFactory": false,
+          "ignoreRequestBody": false,
+          "enableProxy": false,
+          "useSystemProxyProperties": false,
+          "proxyScheme": null,
+          "proxyHost": null,
+          "proxyPort": 0,
+          "proxyUser": null,
+          "proxyPassword": null,
+          "readTimeoutMs": 0,
+          "maxParallelRequestsCount": 0,
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "useRedisQueueForMsgPersistence": false,
+          "trimQueue": false,
+          "maxQueueSize": 0,
+          "credentials": {
+            "type": "anonymous"
+          }
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 491,
+          "layoutY": 750
+        },
+        "type": "org.thingsboard.rule.engine.transform.TbTransformMsgNode",
+        "name": "New Telegram MSG",
+        "debugMode": false,
+        "configuration": {
+          "jsScript": " var newMsg ={};\r\n newMsg.text = '\"' +  msg.name + '\"' + \" has been triggered in device : \" + '\"' + metadata.deviceName + '\"';\r\n newMsg.chat_id = -675166614; \r\n return {msg: newMsg, metadata: metadata, msgType: msgType};"
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 722,
+          "layoutY": 746
+        },
+        "type": "org.thingsboard.rule.engine.rest.TbRestApiCallNode",
+        "name": "REST API telegram call",
+        "debugMode": false,
+        "configuration": {
+          "restEndpointUrlPattern": "https://api.telegram.org/bot1689745418:AAGRsCUGdaeBbg_fgDpDVIVNn13UliP-rJE/sendMessage",
+          "requestMethod": "POST",
+          "useSimpleClientHttpFactory": false,
+          "ignoreRequestBody": false,
+          "enableProxy": false,
+          "useSystemProxyProperties": false,
+          "proxyScheme": null,
+          "proxyHost": null,
+          "proxyPort": 0,
+          "proxyUser": null,
+          "proxyPassword": null,
+          "readTimeoutMs": 0,
+          "maxParallelRequestsCount": 0,
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "useRedisQueueForMsgPersistence": false,
+          "trimQueue": false,
+          "maxQueueSize": 0,
+          "credentials": {
+            "type": "anonymous"
+          }
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 1428,
+          "layoutY": 929
+        },
+        "type": "org.thingsboard.rule.engine.transform.TbTransformMsgNode",
+        "name": "New Telegram MSG",
+        "debugMode": false,
+        "configuration": {
+          "jsScript": " var newMsg ={};\r\n newMsg.text = '\"' +  msg.name + '\"' + \" has been triggered in device : \" + '\"' + metadata.deviceName + '\"';\r\n newMsg.chat_id = -675166614; \r\n return {msg: newMsg, metadata: metadata, msgType: msgType};"
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 1659,
+          "layoutY": 925
+        },
+        "type": "org.thingsboard.rule.engine.rest.TbRestApiCallNode",
+        "name": "REST API telegram call",
+        "debugMode": false,
+        "configuration": {
+          "restEndpointUrlPattern": "https://api.telegram.org/bot1689745418:AAGRsCUGdaeBbg_fgDpDVIVNn13UliP-rJE/sendMessage",
+          "requestMethod": "POST",
+          "useSimpleClientHttpFactory": false,
+          "ignoreRequestBody": false,
+          "enableProxy": false,
+          "useSystemProxyProperties": false,
+          "proxyScheme": null,
+          "proxyHost": null,
+          "proxyPort": 0,
+          "proxyUser": null,
+          "proxyPassword": null,
+          "readTimeoutMs": 0,
+          "maxParallelRequestsCount": 0,
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "useRedisQueueForMsgPersistence": false,
+          "trimQueue": false,
+          "maxQueueSize": 0,
+          "credentials": {
+            "type": "anonymous"
+          }
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 1804,
+          "layoutY": 761
+        },
+        "type": "org.thingsboard.rule.engine.transform.TbTransformMsgNode",
+        "name": "New Telegram MSG",
+        "debugMode": false,
+        "configuration": {
+          "jsScript": " var newMsg ={};\r\n newMsg.text = '\"' +  msg.name + '\"' + \" has been triggered in device : \" + '\"' + metadata.deviceName + '\"';\r\n newMsg.chat_id = -675166614; \r\n return {msg: newMsg, metadata: metadata, msgType: msgType};"
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 2035,
+          "layoutY": 757
+        },
+        "type": "org.thingsboard.rule.engine.rest.TbRestApiCallNode",
+        "name": "REST API telegram call",
+        "debugMode": false,
+        "configuration": {
+          "restEndpointUrlPattern": "https://api.telegram.org/bot1689745418:AAGRsCUGdaeBbg_fgDpDVIVNn13UliP-rJE/sendMessage",
+          "requestMethod": "POST",
+          "useSimpleClientHttpFactory": false,
+          "ignoreRequestBody": false,
+          "enableProxy": false,
+          "useSystemProxyProperties": false,
+          "proxyScheme": null,
+          "proxyHost": null,
+          "proxyPort": 0,
+          "proxyUser": null,
+          "proxyPassword": null,
+          "readTimeoutMs": 0,
+          "maxParallelRequestsCount": 0,
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "useRedisQueueForMsgPersistence": false,
+          "trimQueue": false,
+          "maxQueueSize": 0,
+          "credentials": {
+            "type": "anonymous"
+          }
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 1272,
+          "layoutY": 182
+        },
+        "type": "org.thingsboard.rule.engine.transform.TbTransformMsgNode",
+        "name": "New Telegram MSG",
+        "debugMode": false,
+        "configuration": {
+          "jsScript": " var newMsg ={};\r\n newMsg.text = '\"' +  msg.name + '\"' + \" has been triggered in device : \" + '\"' + metadata.deviceName + '\"';\r\n newMsg.chat_id = -675166614; \r\n return {msg: newMsg, metadata: metadata, msgType: msgType};"
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 1502,
+          "layoutY": 181
+        },
+        "type": "org.thingsboard.rule.engine.rest.TbRestApiCallNode",
+        "name": "REST API telegram call",
+        "debugMode": false,
+        "configuration": {
+          "restEndpointUrlPattern": "https://api.telegram.org/bot1689745418:AAGRsCUGdaeBbg_fgDpDVIVNn13UliP-rJE/sendMessage",
+          "requestMethod": "POST",
+          "useSimpleClientHttpFactory": false,
+          "ignoreRequestBody": false,
+          "enableProxy": false,
+          "useSystemProxyProperties": false,
+          "proxyScheme": null,
+          "proxyHost": null,
+          "proxyPort": 0,
+          "proxyUser": null,
+          "proxyPassword": null,
+          "readTimeoutMs": 0,
+          "maxParallelRequestsCount": 0,
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "useRedisQueueForMsgPersistence": false,
+          "trimQueue": false,
+          "maxQueueSize": 0,
+          "credentials": {
+            "type": "anonymous"
+          }
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 949,
+          "layoutY": 767
+        },
+        "type": "org.thingsboard.rule.engine.filter.TbJsFilterNode",
+        "name": "HighTemperature",
+        "debugMode": false,
+        "configuration": {
+          "jsScript": "return msg.temperature > 25;"
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 1197,
+          "layoutY": 759
+        },
+        "type": "org.thingsboard.rule.engine.filter.TbJsFilterNode",
+        "name": "Low Temperature",
+        "debugMode": false,
+        "configuration": {
+          "jsScript": "return msg.temperature < 15;"
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 1194,
+          "layoutY": 931
+        },
+        "type": "org.thingsboard.rule.engine.action.TbCreateAlarmNode",
+        "name": "HighTemperature",
+        "debugMode": false,
+        "configuration": {
+          "alarmType": "General Alarm",
+          "alarmDetailsBuildJs": "var details = {};\nif (metadata.prevAlarmDetails) {\n    details = JSON.parse(metadata.prevAlarmDetails);\n    //remove prevAlarmDetails from metadata\n    delete metadata.prevAlarmDetails;\n    //now metadata is the same as it comes IN this rule node\n}\n\n\nreturn details;",
+          "severity": "CRITICAL",
+          "propagate": false,
+          "useMessageAlarmData": false,
+          "dynamicSeverity": false,
+          "relationTypes": []
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 1563,
+          "layoutY": 760
+        },
+        "type": "org.thingsboard.rule.engine.action.TbCreateAlarmNode",
+        "name": "LowTemperature",
+        "debugMode": false,
+        "configuration": {
+          "alarmType": "General Alarm",
+          "alarmDetailsBuildJs": "var details = {};\nif (metadata.prevAlarmDetails) {\n    details = JSON.parse(metadata.prevAlarmDetails);\n    //remove prevAlarmDetails from metadata\n    delete metadata.prevAlarmDetails;\n    //now metadata is the same as it comes IN this rule node\n}\n\n\nreturn details;",
+          "severity": "CRITICAL",
+          "propagate": false,
+          "useMessageAlarmData": false,
+          "dynamicSeverity": false,
+          "relationTypes": []
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 1466,
+          "layoutY": 838
+        },
+        "type": "org.thingsboard.rule.engine.action.TbClearAlarmNode",
+        "name": "Clear Temperature",
+        "debugMode": false,
+        "configuration": {
+          "alarmType": "General Alarm",
+          "alarmDetailsBuildJs": "var details = {};\nif (metadata.prevAlarmDetails) {\n    details = JSON.parse(metadata.prevAlarmDetails);\n    //remove prevAlarmDetails from metadata\n    delete metadata.prevAlarmDetails;\n    //now metadata is the same as it comes IN this rule node\n}\n\n\nreturn details;"
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 1884,
+          "layoutY": 193
+        },
+        "type": "org.thingsboard.rule.engine.filter.TbJsFilterNode",
+        "name": "LowHumidity",
+        "debugMode": false,
+        "configuration": {
+          "jsScript": "return msg.humidity < 20;"
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 2109,
+          "layoutY": 197
+        },
+        "type": "org.thingsboard.rule.engine.action.TbCreateAlarmNode",
+        "name": "Low Humidity",
+        "debugMode": false,
+        "configuration": {
+          "alarmDetailsBuildJs": "var details = {};\nif (metadata.prevAlarmDetails) {\n    details = JSON.parse(metadata.prevAlarmDetails);\n    //remove prevAlarmDetails from metadata\n    delete metadata.prevAlarmDetails;\n    //now metadata is the same as it comes IN this rule node\n}\n\n\nreturn details;",
+          "useMessageAlarmData": false,
+          "alarmType": "General Alarm",
+          "severity": "MINOR",
+          "propagate": false,
+          "relationTypes": [],
+          "dynamicSeverity": false
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 559,
+          "layoutY": 497
+        },
+        "type": "org.thingsboard.rule.engine.filter.TbJsFilterNode",
+        "name": "HighHumidity",
+        "debugMode": false,
+        "configuration": {
+          "jsScript": "return msg.humidity > 75;"
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 792,
+          "layoutY": 485
+        },
+        "type": "org.thingsboard.rule.engine.action.TbCreateAlarmNode",
+        "name": "HighHumidity",
+        "debugMode": false,
+        "configuration": {
+          "alarmDetailsBuildJs": "var details = {};\nif (metadata.prevAlarmDetails) {\n    details = JSON.parse(metadata.prevAlarmDetails);\n    //remove prevAlarmDetails from metadata\n    delete metadata.prevAlarmDetails;\n    //now metadata is the same as it comes IN this rule node\n}\n\n\nreturn details;",
+          "useMessageAlarmData": false,
+          "alarmType": "General Alarm",
+          "severity": "MINOR",
+          "propagate": false,
+          "relationTypes": [],
+          "dynamicSeverity": false
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 791,
+          "layoutY": 570
+        },
+        "type": "org.thingsboard.rule.engine.action.TbClearAlarmNode",
+        "name": "Clear Humidity",
+        "debugMode": false,
+        "configuration": {
+          "alarmType": "General Alarm",
+          "alarmDetailsBuildJs": "var details = {};\nif (metadata.prevAlarmDetails) {\n    details = JSON.parse(metadata.prevAlarmDetails);\n    //remove prevAlarmDetails from metadata\n    delete metadata.prevAlarmDetails;\n    //now metadata is the same as it comes IN this rule node\n}\n\n\nreturn details;"
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 1577,
+          "layoutY": 516
+        },
+        "type": "org.thingsboard.rule.engine.filter.TbJsFilterNode",
+        "name": "LowLight",
+        "debugMode": false,
+        "configuration": {
+          "jsScript": "return msg.light < 200;"
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 1858,
+          "layoutY": 516
+        },
+        "type": "org.thingsboard.rule.engine.action.TbCreateAlarmNode",
+        "name": "LowLight",
+        "debugMode": false,
+        "configuration": {
+          "alarmDetailsBuildJs": "var details = {};\nif (metadata.prevAlarmDetails) {\n    details = JSON.parse(metadata.prevAlarmDetails);\n    //remove prevAlarmDetails from metadata\n    delete metadata.prevAlarmDetails;\n    //now metadata is the same as it comes IN this rule node\n}\n\n\nreturn details;",
+          "useMessageAlarmData": false,
+          "alarmType": "General Alarm",
+          "severity": "MINOR",
+          "propagate": false,
+          "relationTypes": [],
+          "dynamicSeverity": false
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 1858,
+          "layoutY": 589
+        },
+        "type": "org.thingsboard.rule.engine.action.TbClearAlarmNode",
+        "name": "Clear Light",
+        "debugMode": false,
+        "configuration": {
+          "alarmType": "General Alarm",
+          "alarmDetailsBuildJs": "var details = {};\nif (metadata.prevAlarmDetails) {\n    details = JSON.parse(metadata.prevAlarmDetails);\n    //remove prevAlarmDetails from metadata\n    delete metadata.prevAlarmDetails;\n    //now metadata is the same as it comes IN this rule node\n}\n\n\nreturn details;"
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 33,
+          "layoutY": 741
+        },
+        "type": "org.thingsboard.rule.engine.filter.TbJsFilterNode",
+        "name": "DrySoil",
+        "debugMode": false,
+        "configuration": {
+          "jsScript": "return msg.soilHumidity < 20;"
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 276,
+          "layoutY": 742
+        },
+        "type": "org.thingsboard.rule.engine.action.TbCreateAlarmNode",
+        "name": "DrySoil",
+        "debugMode": false,
+        "configuration": {
+          "alarmDetailsBuildJs": "var details = {};\nif (metadata.prevAlarmDetails) {\n    details = JSON.parse(metadata.prevAlarmDetails);\n    //remove prevAlarmDetails from metadata\n    delete metadata.prevAlarmDetails;\n    //now metadata is the same as it comes IN this rule node\n}\n\n\nreturn details;",
+          "useMessageAlarmData": false,
+          "alarmType": "General Alarm",
+          "severity": "MAJOR",
+          "propagate": false,
+          "relationTypes": [],
+          "dynamicSeverity": false
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 274,
+          "layoutY": 817
+        },
+        "type": "org.thingsboard.rule.engine.action.TbClearAlarmNode",
+        "name": "Clear Dry",
+        "debugMode": false,
+        "configuration": {
+          "alarmType": "General Alarm",
+          "alarmDetailsBuildJs": "var details = {};\nif (metadata.prevAlarmDetails) {\n    details = JSON.parse(metadata.prevAlarmDetails);\n    //remove prevAlarmDetails from metadata\n    delete metadata.prevAlarmDetails;\n    //now metadata is the same as it comes IN this rule node\n}\n\n\nreturn details;"
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 277,
+          "layoutY": 150
+        },
+        "type": "org.thingsboard.rule.engine.filter.TbJsFilterNode",
+        "name": "CO2 Warning",
+        "debugMode": false,
+        "configuration": {
+          "jsScript": "return msg.co2 > 900;"
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 545,
+          "layoutY": 150
+        },
+        "type": "org.thingsboard.rule.engine.filter.TbJsFilterNode",
+        "name": "CO2 Danger",
+        "debugMode": false,
+        "configuration": {
+          "jsScript": "return msg.temperature > 1200;"
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 803,
+          "layoutY": 155
+        },
+        "type": "org.thingsboard.rule.engine.action.TbCreateAlarmNode",
+        "name": "CO2 Danger",
+        "debugMode": false,
+        "configuration": {
+          "alarmDetailsBuildJs": "var details = {};\nif (metadata.prevAlarmDetails) {\n    details = JSON.parse(metadata.prevAlarmDetails);\n    //remove prevAlarmDetails from metadata\n    delete metadata.prevAlarmDetails;\n    //now metadata is the same as it comes IN this rule node\n}\n\n\nreturn details;",
+          "useMessageAlarmData": false,
+          "alarmType": "General Alarm",
+          "severity": "MAJOR",
+          "propagate": false,
+          "relationTypes": [],
+          "dynamicSeverity": false
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 807,
+          "layoutY": 234
+        },
+        "type": "org.thingsboard.rule.engine.action.TbCreateAlarmNode",
+        "name": "CO2 Warning",
+        "debugMode": false,
+        "configuration": {
+          "alarmDetailsBuildJs": "var details = {};\nif (metadata.prevAlarmDetails) {\n    details = JSON.parse(metadata.prevAlarmDetails);\n    //remove prevAlarmDetails from metadata\n    delete metadata.prevAlarmDetails;\n    //now metadata is the same as it comes IN this rule node\n}\n\n\nreturn details;",
+          "useMessageAlarmData": false,
+          "alarmType": "General Alarm",
+          "severity": "MINOR",
+          "propagate": false,
+          "relationTypes": [],
+          "dynamicSeverity": false
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 560,
+          "layoutY": 305
+        },
+        "type": "org.thingsboard.rule.engine.action.TbClearAlarmNode",
+        "name": "Clear CO2 Alarms",
+        "debugMode": false,
+        "configuration": {
+          "alarmType": "General Alarm",
+          "alarmDetailsBuildJs": "var details = {};\nif (metadata.prevAlarmDetails) {\n    details = JSON.parse(metadata.prevAlarmDetails);\n    //remove prevAlarmDetails from metadata\n    delete metadata.prevAlarmDetails;\n    //now metadata is the same as it comes IN this rule node\n}\n\n\nreturn details;"
+        }
+      }
+    ],
+    "connections": [
+      {
+        "fromIndex": 0,
+        "toIndex": 1,
+        "type": "Success"
+      },
+      {
+        "fromIndex": 0,
+        "toIndex": 1,
+        "type": "Failure"
+      },
+      {
+        "fromIndex": 1,
+        "toIndex": 21,
+        "type": "Success"
+      },
+      {
+        "fromIndex": 1,
+        "toIndex": 21,
+        "type": "Failure"
+      },
+      {
+        "fromIndex": 2,
+        "toIndex": 3,
+        "type": "Success"
+      },
+      {
+        "fromIndex": 2,
+        "toIndex": 3,
+        "type": "Failure"
+      },
+      {
+        "fromIndex": 3,
+        "toIndex": 24,
+        "type": "Success"
+      },
+      {
+        "fromIndex": 3,
+        "toIndex": 24,
+        "type": "Failure"
+      },
+      {
+        "fromIndex": 4,
+        "toIndex": 5,
+        "type": "Success"
+      },
+      {
+        "fromIndex": 4,
+        "toIndex": 5,
+        "type": "Failure"
+      },
+      {
+        "fromIndex": 5,
+        "toIndex": 27,
+        "type": "Success"
+      },
+      {
+        "fromIndex": 5,
+        "toIndex": 27,
+        "type": "Failure"
+      },
+      {
+        "fromIndex": 6,
+        "toIndex": 7,
+        "type": "Success"
+      },
+      {
+        "fromIndex": 6,
+        "toIndex": 7,
+        "type": "Failure"
+      },
+      {
+        "fromIndex": 7,
+        "toIndex": 14,
+        "type": "Success"
+      },
+      {
+        "fromIndex": 7,
+        "toIndex": 14,
+        "type": "Failure"
+      },
+      {
+        "fromIndex": 8,
+        "toIndex": 9,
+        "type": "Success"
+      },
+      {
+        "fromIndex": 8,
+        "toIndex": 9,
+        "type": "Failure"
+      },
+      {
+        "fromIndex": 10,
+        "toIndex": 11,
+        "type": "Success"
+      },
+      {
+        "fromIndex": 10,
+        "toIndex": 11,
+        "type": "Failure"
+      },
+      {
+        "fromIndex": 12,
+        "toIndex": 13,
+        "type": "Success"
+      },
+      {
+        "fromIndex": 12,
+        "toIndex": 13,
+        "type": "Failure"
+      },
+      {
+        "fromIndex": 13,
+        "toIndex": 19,
+        "type": "Success"
+      },
+      {
+        "fromIndex": 13,
+        "toIndex": 19,
+        "type": "Failure"
+      },
+      {
+        "fromIndex": 14,
+        "toIndex": 15,
+        "type": "False"
+      },
+      {
+        "fromIndex": 14,
+        "toIndex": 15,
+        "type": "Failure"
+      },
+      {
+        "fromIndex": 14,
+        "toIndex": 16,
+        "type": "True"
+      },
+      {
+        "fromIndex": 15,
+        "toIndex": 17,
+        "type": "True"
+      },
+      {
+        "fromIndex": 15,
+        "toIndex": 18,
+        "type": "False"
+      },
+      {
+        "fromIndex": 15,
+        "toIndex": 18,
+        "type": "Failure"
+      },
+      {
+        "fromIndex": 16,
+        "toIndex": 8,
+        "type": "Created"
+      },
+      {
+        "fromIndex": 16,
+        "toIndex": 8,
+        "type": "Updated"
+      },
+      {
+        "fromIndex": 16,
+        "toIndex": 8,
+        "type": "False"
+      },
+      {
+        "fromIndex": 16,
+        "toIndex": 8,
+        "type": "Failure"
+      },
+      {
+        "fromIndex": 17,
+        "toIndex": 10,
+        "type": "Created"
+      },
+      {
+        "fromIndex": 17,
+        "toIndex": 10,
+        "type": "Updated"
+      },
+      {
+        "fromIndex": 17,
+        "toIndex": 10,
+        "type": "False"
+      },
+      {
+        "fromIndex": 17,
+        "toIndex": 10,
+        "type": "Failure"
+      },
+      {
+        "fromIndex": 19,
+        "toIndex": 20,
+        "type": "True"
+      },
+      {
+        "fromIndex": 19,
+        "toIndex": 21,
+        "type": "False"
+      },
+      {
+        "fromIndex": 19,
+        "toIndex": 21,
+        "type": "Failure"
+      },
+      {
+        "fromIndex": 20,
+        "toIndex": 0,
+        "type": "Created"
+      },
+      {
+        "fromIndex": 20,
+        "toIndex": 0,
+        "type": "Updated"
+      },
+      {
+        "fromIndex": 20,
+        "toIndex": 0,
+        "type": "False"
+      },
+      {
+        "fromIndex": 20,
+        "toIndex": 0,
+        "type": "Failure"
+      },
+      {
+        "fromIndex": 21,
+        "toIndex": 22,
+        "type": "True"
+      },
+      {
+        "fromIndex": 21,
+        "toIndex": 23,
+        "type": "False"
+      },
+      {
+        "fromIndex": 21,
+        "toIndex": 23,
+        "type": "Failure"
+      },
+      {
+        "fromIndex": 22,
+        "toIndex": 2,
+        "type": "Created"
+      },
+      {
+        "fromIndex": 22,
+        "toIndex": 2,
+        "type": "Updated"
+      },
+      {
+        "fromIndex": 22,
+        "toIndex": 2,
+        "type": "False"
+      },
+      {
+        "fromIndex": 22,
+        "toIndex": 2,
+        "type": "Failure"
+      },
+      {
+        "fromIndex": 23,
+        "toIndex": 24,
+        "type": "Cleared"
+      },
+      {
+        "fromIndex": 23,
+        "toIndex": 24,
+        "type": "False"
+      },
+      {
+        "fromIndex": 23,
+        "toIndex": 24,
+        "type": "Failure"
+      },
+      {
+        "fromIndex": 24,
+        "toIndex": 25,
+        "type": "True"
+      },
+      {
+        "fromIndex": 24,
+        "toIndex": 26,
+        "type": "False"
+      },
+      {
+        "fromIndex": 24,
+        "toIndex": 26,
+        "type": "Failure"
+      },
+      {
+        "fromIndex": 25,
+        "toIndex": 4,
+        "type": "Created"
+      },
+      {
+        "fromIndex": 25,
+        "toIndex": 4,
+        "type": "Updated"
+      },
+      {
+        "fromIndex": 25,
+        "toIndex": 4,
+        "type": "False"
+      },
+      {
+        "fromIndex": 25,
+        "toIndex": 4,
+        "type": "Failure"
+      },
+      {
+        "fromIndex": 26,
+        "toIndex": 27,
+        "type": "Cleared"
+      },
+      {
+        "fromIndex": 26,
+        "toIndex": 27,
+        "type": "False"
+      },
+      {
+        "fromIndex": 26,
+        "toIndex": 27,
+        "type": "Failure"
+      },
+      {
+        "fromIndex": 27,
+        "toIndex": 28,
+        "type": "True"
+      },
+      {
+        "fromIndex": 27,
+        "toIndex": 29,
+        "type": "False"
+      },
+      {
+        "fromIndex": 27,
+        "toIndex": 29,
+        "type": "Failure"
+      },
+      {
+        "fromIndex": 28,
+        "toIndex": 6,
+        "type": "Created"
+      },
+      {
+        "fromIndex": 28,
+        "toIndex": 6,
+        "type": "Updated"
+      },
+      {
+        "fromIndex": 28,
+        "toIndex": 6,
+        "type": "False"
+      },
+      {
+        "fromIndex": 28,
+        "toIndex": 6,
+        "type": "Failure"
+      },
+      {
+        "fromIndex": 29,
+        "toIndex": 14,
+        "type": "Cleared"
+      },
+      {
+        "fromIndex": 29,
+        "toIndex": 14,
+        "type": "False"
+      },
+      {
+        "fromIndex": 29,
+        "toIndex": 14,
+        "type": "Failure"
+      },
+      {
+        "fromIndex": 30,
+        "toIndex": 31,
+        "type": "True"
+      },
+      {
+        "fromIndex": 30,
+        "toIndex": 34,
+        "type": "False"
+      },
+      {
+        "fromIndex": 30,
+        "toIndex": 34,
+        "type": "Failure"
+      },
+      {
+        "fromIndex": 31,
+        "toIndex": 32,
+        "type": "True"
+      },
+      {
+        "fromIndex": 31,
+        "toIndex": 33,
+        "type": "False"
+      },
+      {
+        "fromIndex": 31,
+        "toIndex": 33,
+        "type": "Failure"
+      },
+      {
+        "fromIndex": 32,
+        "toIndex": 12,
+        "type": "Created"
+      },
+      {
+        "fromIndex": 32,
+        "toIndex": 12,
+        "type": "Updated"
+      },
+      {
+        "fromIndex": 32,
+        "toIndex": 12,
+        "type": "False"
+      },
+      {
+        "fromIndex": 32,
+        "toIndex": 12,
+        "type": "Failure"
+      },
+      {
+        "fromIndex": 33,
+        "toIndex": 12,
+        "type": "Created"
+      },
+      {
+        "fromIndex": 33,
+        "toIndex": 12,
+        "type": "Updated"
+      },
+      {
+        "fromIndex": 33,
+        "toIndex": 12,
+        "type": "False"
+      },
+      {
+        "fromIndex": 33,
+        "toIndex": 12,
+        "type": "Failure"
+      },
+      {
+        "fromIndex": 34,
+        "toIndex": 19,
+        "type": "Cleared"
+      },
+      {
+        "fromIndex": 34,
+        "toIndex": 19,
+        "type": "False"
+      },
+      {
+        "fromIndex": 34,
+        "toIndex": 19,
+        "type": "Failure"
+      }
+    ],
+    "ruleChainConnections": null
+  }
+}

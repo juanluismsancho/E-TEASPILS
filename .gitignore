@@ -32,4 +32,12 @@
 *.app
 
 # Credentials fils
-credentials.h
+V1_TeaSpike/include/credentials.h
+V1_TeaSpike/include/configuration.h
+
+#VSCode
+V1_TeaSpike/.pio
+V1_TeaSpike/.vscode/.browse.c_cpp.db*
+V1_TeaSpike/.vscode/c_cpp_properties.json
+V1_TeaSpike/.vscode/launch.json
+V1_TeaSpike/.vscode/ipch
