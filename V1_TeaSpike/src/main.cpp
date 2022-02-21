@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <credentials.h>
 #include <configuration.h>
-#include <Wire.h> //#include <OneWire.h>
+#include <Wire.h> 
 #include <SparkFun_SCD30_Arduino_Library.h>
 #include "ThingsBoard.h"
 #include <SPI.h>
@@ -13,14 +13,12 @@
 #include <WiFiClientSecure.h>
 #include <Adafruit_NeoPixel.h>
 #include "Adafruit_VEML7700.h"
-
-// wifi data
-#define WIFI_NAME "Jl"                // wifi
-#define WIFI_PASSWORD "lolwifigratis" // wifipass
+#include <OneWire.h>
+#include <DallasTemperature.h>
 
 // Borrable?
-int pinInternet = 4;
-boolean internetActivo = false;
+// int pinInternet = 4;
+// boolean internetActivo = false; //No se consulta
 
 // thingsboard
 #define TOKEN tokenDevice
@@ -28,8 +26,8 @@ boolean internetActivo = false;
 WiFiClient espClient;
 ThingsBoard tb(espClient);
 int status = WL_IDLE_STATUS;
-boolean thingsboardActivo = false; // Borrables. No se hace ninguna comprobacion o consulta de estas variables
-int pinThingsboard = 16;           // Borrables
+// boolean thingsboardActivo = false; // Borrables. No se hace ninguna comprobacion o consulta de estas variables
+// int pinThingsboard = 16;           // Borrables
 
 // telegram
 #define BOT_TOKEN tokenBot
@@ -42,8 +40,7 @@ unsigned long bot_lasttime; // last time messages' scan has been done
 RTC_DS3231 rtc;
 
 // SD
-int pinSD = 17;
-boolean sdActiva = false;
+//boolean sdActiva = false;
 File logData;
 int hora = 0;
 
@@ -53,11 +50,15 @@ SCD30 airSensor;
 // veml7700. Light
 Adafruit_VEML7700 veml = Adafruit_VEML7700();
 
+//DS18B20. Soil Temperature
+OneWire oneWireObject(SOILTEMP_SENSOR_PIN);
+DallasTemperature soilTemperatureSensor(&oneWireObject);
+
 // LED
 Adafruit_NeoPixel pixel(1, 4, NEO_GRB + NEO_KHZ800);
 
 // LED_RING
-Adafruit_NeoPixel pixels(NUMPIXELS, Ring_PIN, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel pixels(NUMPIXELS, RING_PIN, NEO_GRB + NEO_KHZ800);
 int ringElement = 1;
 
 // OLED
@@ -75,19 +76,27 @@ int soilHumidityValue = 0;
 int soilTemperatureValue = 0;
 
 int presentMoment = 0;
+int displayMode = 1;
+int fixedSensor=1;  //Inicialización arbitraria
 
-void comprobarSD();
+void initDisplay();
+void initRing();
+void initCo2();
+void initLight();
+void initSoilTemp();
+void initClock();
+void checkSD();
 void writeFile(fs::FS &fs, const char *path, const char *message);
 void appendFile(fs::FS &fs, const char *path, const char *message);
-String completeDate();
+String completeDate(int mode);
 void conectIOT();
-void startDisplay();
-void lecturaSensores();
-void mostrarCarrusel();
-void mostrarTodo();
+void sensorsRead();
+void displayCarousel();
+void displayAll();
 void fixSensor(int sensor);
-void escrituraSensores();
-void comprobarBot();
+void logDataset();
+void uploadData();
+void checkBot();
 void handleNewMessages(int numNewMessages);
 void ring(int sensor);
 void RING_LIGHT();
@@ -96,11 +105,74 @@ void RING_TEMP();
 void RING_HUM();
 void RING_SOILHUM();
 void RING_SOILTEM();
+void noInternetMsg();
 
 void setup()
 {
-  Serial.begin(115200);
+  Serial.begin(BAUD_RATE);
+  initRing();
+  initDisplay();
 
+  delay(2000);
+
+  checkSD();  // Se comprueba si hay microSD evitando continuar hasta que no se inserte. Espera Activa
+
+  writeFile(SD, "/log.txt", LogInitialMessage.c_str());
+  // logData = SD.open("/log.txt", FILE_WRITE);
+
+  conectIOT();   // Se conecta a WIFI y la plataforma IoT
+
+  initCo2();
+
+  initSoilTemp();
+
+  initLight();
+
+  initClock();
+}
+
+void loop()
+{
+  checkSD();
+  if (WiFi.status() != WL_CONNECTED || !tb.connected())
+  {
+    conectIOT();
+  }
+  else
+  {
+    // internetActivo = true;
+    // thingsboardActivo = true;
+  }
+
+  checkBot();
+
+  sensorsRead();
+
+  if (displayMode == 3)
+    displayCarousel();
+  else if (displayMode == 1)
+    displayAll();
+  else
+    fixSensor(fixedSensor);
+
+  logDataset();
+
+  // if(thingsboardActivo && presentMoment==envio)
+  if (presentMoment == sendPeriod)
+  {
+    uploadData();
+    presentMoment = 0;
+  }
+
+  ambCont++;
+  soilCont++;
+  presentMoment++;
+
+  delay(1000);
+}
+
+void initRing()
+{
   pixels.begin(); // INITIALIZE NeoPixel strip object (REQUIRED)
   pixels.clear();
 
@@ -109,60 +181,72 @@ void setup()
 
   pixel.setPixelColor(0, pixel.Color(0, 0, 0));
   pixel.show();
+}
 
+void initDisplay()
+{
   display.begin(SH1106_SWITCHCAPVCC, 0x3C);
-  startDisplay(); // Se inicia la pantalla OLED presentando un mensaje de bienvenida y el logo
+  display.clearDisplay();
+  display.setTextSize(1);
+  display.setTextColor(WHITE);
+  display.setCursor(45, 24);
+  display.println("Starting");
+  display.setCursor(25, 32);
+  display.println("TEASPIL system");
+  display.display();
+  delay(3000);
 
-  delay(2000); // Pause for 2 seconds
+  // miniature bitmap display
+  display.clearDisplay();
+  display.drawBitmap(0, 0, LOGO, 128, 64, 1);
+  display.display();
+  delay(3000);
+}
 
-  // Se comprueba si hay microSD evitando continuar hasta que no se inserte
-  if (!SD.begin(5))
-  {
-    sdActiva = false;
-    //  digitalWrite(pinSD,HIGH);
-    display.clearDisplay();
-    display.setCursor(45, 24);
-    display.println("Problema"); // imprime la frase en el centro de la zona superior
-    display.setCursor(25, 32);
-    display.println("en la SD"); // imprime la frase en el centro de la zona superior
-    display.display();
-    while (!SD.begin(5))
-      ;
-  }
-
-  sdActiva = true;
-  // digitalWrite(pinSD,LOW);
-
-  writeFile(SD, "/log.txt", LogInitialMessage.c_str());
-
-  // logData = SD.open("/log.txt", FILE_WRITE);
-
-  // Se conecta a WIFI y la plataforma IoT
-  conectIOT();
-
-  // Se inicializa el sensor de CO2, Temperatura y humedad ambiental
+void initCo2()
+{
   Wire.begin();
   while (airSensor.begin() == false)
   {
     display.clearDisplay();
     display.setCursor(45, 24);
-    display.println(" No se ha "); // imprime la frase en el centro de la zona superior
+    display.println(" No se ha ");
     display.setCursor(45, 32);
-    display.println(" detectado"); // imprime la frase en el centro de la zona superior
+    display.println(" detectado");
     display.setCursor(45, 40);
-    display.println("   SCD30  "); // imprime la frase en el centro de la zona superior
+    display.println("   SCD30  ");
     display.display();
+    delay(500);
   }
+}
 
+void initSoilTemp(){
+  soilTemperatureSensor.begin();
+  while (soilTemperatureSensor.getDeviceCount()==0)
+  {
+    display.clearDisplay();
+    display.setCursor(45, 24);
+    display.println(" No se ha ");
+    display.setCursor(45, 32);
+    display.println(" detectado");
+    display.setCursor(45, 40);
+    display.println("   DS18B20  ");
+    display.display();
+    delay(500);
+  } 
+}
+
+void initLight()
+{
   while (veml.begin() == false)
   {
     display.clearDisplay();
     display.setCursor(45, 24);
-    display.println(" No se ha "); // imprime la frase en el centro de la zona superior
+    display.println(" No se ha ");
     display.setCursor(45, 32);
-    display.println(" detectado"); // imprime la frase en el centro de la zona superior
+    display.println(" detectado");
     display.setCursor(45, 40);
-    display.println(" veml7700 "); // imprime la frase en el centro de la zona superior
+    display.println(" veml7700 ");
     display.display();
   }
   veml.setGain(VEML7700_GAIN_1);
@@ -170,20 +254,21 @@ void setup()
   veml.setLowThreshold(10000);
   veml.setHighThreshold(20000);
   veml.interruptEnable(true);
+}
 
-  // Se inicializa el reloj
+void initClock()
+{
   while (!rtc.begin())
   {
     display.clearDisplay();
     display.setCursor(45, 24);
-    display.println(" No se ha "); // imprime la frase en el centro de la zona superior
+    display.println(" No se ha ");
     display.setCursor(45, 32);
-    display.println(" detectado"); // imprime la frase en el centro de la zona superior
+    display.println(" detectado");
     display.setCursor(45, 40);
-    display.println("   reloj  "); // imprime la frase en el centro de la zona superior
+    display.println("   reloj  ");
     display.display();
   }
-
   // Si se ha perdido la corriente, fijar fecha y hora
   if (rtc.lostPower())
   {
@@ -194,99 +279,42 @@ void setup()
   }
 }
 
-void loop()
-{
-
-  comprobarSD();
-
-  if (WiFi.status() != WL_CONNECTED || !tb.connected())
-  {
-    conectIOT();
-  }
-  else
-  {
-    internetActivo = true;
-    thingsboardActivo = true;
-  }
-
-  comprobarBot();
-
-  lecturaSensores();
-
-  if (displayMode == 3)
-    mostrarCarrusel();
-  else if (displayMode == 1)
-    mostrarTodo();
-  else
-    fixSensor(fixedSensor);
-
-  escrituraSensores();
-
-  // if(thingsboardActivo && presentMoment==envio)
-  if (presentMoment == envio)
-  {
-    Serial.println("ENVIO DATOS");
-    tb.sendTelemetryInt("co2", CO2Value);
-    tb.sendTelemetryInt("temperature", tempValue);
-    tb.sendTelemetryInt("humidity", humidityValue);
-    tb.sendTelemetryInt("light", lightValue);
-    tb.sendTelemetryInt("soilTemp", soilTemperatureValue);
-    tb.sendTelemetryInt("soilHumidity", soilHumidityValue);
-    presentMoment = 0;
-  }
-
-  ambCont++;
-  soilCont++;
-  presentMoment++;
-
-  delay(tiempoDelay);
-}
-
-void comprobarSD()
+void checkSD()
 {
   SD.end();
-  if (SD.begin(5))
+  while (!SD.begin(5))
   {
-    sdActiva = true;
-    // digitalWrite(pinSD,LOW);
-    // logData = SD.open("/log.txt", FILE_WRITE);
-  }
-  else
-  {
-    sdActiva = false;
-    pixel.setPixelColor(0, pixel.Color(0, 0, 255));
-    pixel.show();
+    //sdActiva = false;
+    //  digitalWrite(SD_PIN,HIGH);
     display.clearDisplay();
     display.setCursor(45, 24);
-    display.println("Problema"); // imprime la frase en el centro de la zona superior
+    display.println("Problema");
     display.setCursor(25, 32);
-    display.println("en la SD"); // imprime la frase en el centro de la zona superior
+    display.println("en la SD");
     display.display();
-    while (!SD.begin(5))
-      ;
-    sdActiva = true;
-    digitalWrite(pinSD, LOW);
-    // logData = SD.open("/log.txt", FILE_WRITE);
+    delay(100);
   }
+  //sdActiva = true;
 }
 
+//Writes data into SD card and prints a log on Serial console
 void writeFile(fs::FS &fs, const char *path, const char *message)
 {
-  // Serial.printf("Writing file: %s\n", path);
+  Serial.printf("Writing file: %s\n", path);
 
   File file = fs.open(path, FILE_WRITE);
   if (!file)
   {
-    // Serial.println("Failed to open file for writing");
+    Serial.println("Failed to open file for writing");
     return;
   }
   if (file.print(message))
   {
-    // Serial.println("File written");
+    Serial.println("File written");
   }
   else
   {
-    // Serial.println("Write failed");
+    Serial.println("Write failed");
   }
   file.close();
 }
@@ -311,11 +339,17 @@ void appendFile(fs::FS &fs, const char *path, const char *message)
   file.close();
 }
 
-String completeDate()
+String completeDate(int mode)
 {
   DateTime date = rtc.now();
-  String date2 = String(date.year()) + '/' + String(date.month()) + '/' + String(date.day()) + ' ' + String(date.hour()) + ':' + String(date.minute()) + ':' + String(date.second());
-  return date2;
+  String formattedDate;
+  if (mode==2){
+    formattedDate = String(date.year()) + '/' + String(date.month()) + '/' + String(date.day()) + ' ' + String(date.hour()) + ':' + String(date.minute()) + ':' + String(date.second());
+  }
+  else{
+    formattedDate=date.timestamp();
+  }
+  return formattedDate;
 }
 
 void conectIOT()
@@ -331,80 +365,57 @@ void conectIOT()
 
     pixel.setPixelColor(0, pixel.Color(255, 0, 0));
     pixel.show();
+    noInternetMsg();
 
     int i = 0;
     while (i < 5 && WiFi.status() != WL_CONNECTED)
     {
       i++;
-      delay(100);
+      delay(1000);
     }
   }
   else
   {
-
-    // pixel.setPixelColor(0, pixel.Color(255,255, 0));
-    // pixel.show();
-
     secured_client.setCACert(TELEGRAM_CERTIFICATE_ROOT); // Add root certificate for api.telegram.org
     if (!tb.connected())
     {
       if (!tb.connect(THINGSBOARD_SERVER, TOKEN))
       {
-        thingsboardActivo = false;
-        pixel.setPixelColor(0, pixel.Color(0, 255, 0));
+        // thingsboardActivo = false;
+        pixel.setPixelColor(0, pixel.Color(204, 51, 255));
         pixel.show();
       }
       else
       {
-        thingsboardActivo = true;
-        pixel.setPixelColor(0, pixel.Color(0, 0, 0));
+        // thingsboardActivo = true;
+        pixel.setPixelColor(0, pixel.Color(0, 255, 0));
         pixel.show();
       }
     }
   }
 }
 
-void startDisplay()
+void sensorsRead()
 {
-  display.clearDisplay();
-  display.setTextSize(1);
-  display.setTextColor(WHITE);
-  display.setCursor(45, 24);
-  display.println("Starting");
-  display.setCursor(25, 32);
-  display.println("TEASPIL system");
-  display.display();
-  delay(3000);
-
-  // miniature bitmap display
-  display.clearDisplay();
-  display.drawBitmap(0, 0, LOGO, 128, 64, 1);
-  display.display();
-  delay(3000);
-}
-
-void lecturaSensores()
-{
-  if (ambCont == ambCadence)
+  if (ambCont == ambPeriod)
   {
     lightValue = veml.readLux();
     CO2Value = airSensor.getCO2();
     tempValue = airSensor.getTemperature();
     humidityValue = airSensor.getHumidity();
-
     ambCont = 0;
   }
 
-  if (soilCont == soilCadence)
+  if (soilCont == soilPeriod)
   {
     soilHumidityValue = analogRead(SOILHUMIDITY_SENSOR_PIN);
-    soilTemperatureValue = analogRead(SOILTEMPERATURE_PIN);
+    soilTemperatureValue = static_cast<int>(round(soilTemperatureSensor.getTempCByIndex(0)));
 
     soilCont = 0;
   }
 }
 
-void mostrarCarrusel()
+void displayCarousel()
 {
   ring(2);
 
@@ -468,7 +479,7 @@ void mostrarCarrusel()
   delay(cambio);
 }
 
-void mostrarTodo()
+void displayAll()
 {
   ring(ringElement);
   String isco2 = "";
@@ -614,21 +625,24 @@ void fixSensor(int sensor)
   }
 }
 
-void escrituraSensores()
+void logDataset()
 {
-  String CO2Message = completeDate() + ";" + CO2_ID + ";" + CO2Value;
-  String TempMessage = completeDate() + ";" + Temp_ID + ";" + tempValue;
-  String HumidityMessage = completeDate() + ";" + Humidity_ID + ";" + humidityValue;
-  String LightMessage = completeDate() + ";" + Light_ID + ";" + lightValue;
-  String SoilTemperatureMessage = completeDate() + ";" + SoilTemperature_ID + ";" + humidityValue;
-  String soilHumidityMessage = completeDate() + ";" + SoilHumidity_ID + ";" + soilHumidityValue;
-
-  String writeLog = "\n" + CO2Message + "\n" + TempMessage + "\n" + HumidityMessage + "\n" + LightMessage + "\n" + SoilTemperatureMessage + "\n" + soilHumidityMessage;
+  String writeLog = "\n" + completeDate(1) + ";" + CO2Value + ";" + humidityValue + ";" + lightValue + ";" + soilHumidityValue  + ";" + soilTemperatureValue  + ";" + tempValue;
 
   appendFile(SD, "/log.txt", writeLog.c_str());
 }
 
-void comprobarBot()
+void uploadData(){
+    Serial.println("ENVIO DATOS");
+    tb.sendTelemetryInt("co2", CO2Value);
+    tb.sendTelemetryInt("temperature", tempValue);
+    tb.sendTelemetryInt("humidity", humidityValue);
+    tb.sendTelemetryInt("light", lightValue);
+    tb.sendTelemetryInt("soilTemp", soilTemperatureValue);
+    tb.sendTelemetryInt("soilHumidity", soilHumidityValue);
+}
+
+void checkBot()
 {
   if (millis() - bot_lasttime > BOT_MTBS)
   {
@@ -1088,4 +1102,15 @@ void RING_SOILTEM()
       pixels.setPixelColor(i, pixels.Color(quartile1[0], quartile1[1], quartile1[2]));
   }
   pixels.show();
+}
+
+void noInternetMsg(){
+    display.clearDisplay();
+    display.setCursor(45, 24);
+    display.println("Internet Connection Failed ");
+    display.setCursor(0, 32);
+    display.println("Please, make sure that the following network is aviable");
+    display.setCursor(45, 40);
+    display.println(WIFI_NAME);
+    display.display();
 }
