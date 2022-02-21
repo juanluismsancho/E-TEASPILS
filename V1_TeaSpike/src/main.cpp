@@ -60,6 +60,10 @@ Adafruit_NeoPixel pixel(1, 4, NEO_GRB + NEO_KHZ800);
 // LED_RING
 Adafruit_NeoPixel pixels(NUMPIXELS, RING_PIN, NEO_GRB + NEO_KHZ800);
 int ringElement = 1;
+int colorLow[] = {0, 240, 255};     
+int colorMedium[] = {0, 255, 121}; 
+int colorLarge[] = {255, 195, 0}; 
+int colorHigh[] = {255, 0, 0}; 
 
 // OLED
 Adafruit_SH1106 display(21, 22);
@@ -67,6 +71,9 @@ Adafruit_SH1106 display(21, 22);
 // Counter for data reading
 int ambCont = 0;
 int soilCont = 0;
+
+//Period of data upload
+int sendPeriod=DEFAULT_PERIOD;
 
 int lightValue = 0;
 int CO2Value = 0;
@@ -827,41 +834,45 @@ void handleNewMessages(int numNewMessages)
       String message = "Soil Temperature: " + (String)soilTemperatureValue;
       bot.sendMessage(chat_id, message, "");
     }
-
-    if (text == "SetColorQuartile1")
+    if (text == "/setPeriod"){
+      sendPeriod=param1.toInt();
+      String message =  "Period of data uploading setted to " + (String)sendPeriod + " secs";
+      bot.sendMessage(chat_id, message, "");
+    }
+    if (text == "SetColorLow")
     {
-      quartile1[0] = param1.toInt();
-      quartile1[1] = param2.toInt();
-      quartile1[2] = param3.toInt();
-      bot.sendMessage(chat_id, "Updated the quartile-1 color", "");
+      colorLow[0] = param1.toInt();
+      colorLow[1] = param2.toInt();
+      colorLow[2] = param3.toInt();
+      bot.sendMessage(chat_id, "Updated the LOW color", "");
     }
 
-    if (text == "SetColorQuartile2")
+    if (text == "SetColorMedium")
     {
-      quartile2[0] = param1.toInt();
-      quartile2[1] = param2.toInt();
-      quartile2[2] = param3.toInt();
-      bot.sendMessage(chat_id, "Updated the quartile-2 color", "");
+      colorMedium[0] = param1.toInt();
+      colorMedium[1] = param2.toInt();
+      colorMedium[2] = param3.toInt();
+      bot.sendMessage(chat_id, "Updated the MEDIUM color", "");
     }
 
-    if (text == "SetColorQuartile3")
+    if (text == "SetColorLarge")
     {
-      quartile3[0] = param1.toInt();
-      quartile3[1] = param2.toInt();
-      quartile3[2] = param3.toInt();
-      bot.sendMessage(chat_id, "Updated the quartile-3 color", "");
+      colorLarge[0] = param1.toInt();
+      colorLarge[1] = param2.toInt();
+      colorLarge[2] = param3.toInt();
+      bot.sendMessage(chat_id, "Updated the LARGE color", "");
     }
 
-    if (text == "SetColorQuartile4")
+    if (text == "SetColorHigh")
     {
-      quartile4[0] = param1.toInt();
-      quartile4[1] = param2.toInt();
-      quartile4[2] = param3.toInt();
-      bot.sendMessage(chat_id, "Updated the quartile-4 color", "");
+      colorHigh[0] = param1.toInt();
+      colorHigh[1] = param2.toInt();
+      colorHigh[2] = param3.toInt();
+      bot.sendMessage(chat_id, "Updated the VERY HIGH color", "");
     }
     if (text == "/COLOR")
     {
-      String aux = (String)quartile1[0] + " " + (String)quartile1[1] + " " + (String)quartile1[2];
+      String aux = (String)colorLow[0] + " " + (String)colorLow[1] + " " + (String)colorLow[2];
       bot.sendMessage(chat_id, aux, "");
     }
     if (text == "/start")
@@ -887,11 +898,12 @@ void handleNewMessages(int numNewMessages)
       welcome += "/setHumidity : set humidity value in display\n";
       welcome += "/setSoilHumidity : set soil humidity value in display\n";
       welcome += "/setSoilTemperature : set soil temperature value in display\n";
+      welcome += "/setPeriod : set the period of data uploading in seconds\n";
       welcome += "how to use the following commands\n --> command 255 255 255\n";
-      welcome += "SetColorQuartile1 R G B : new color for quartil one\n";
-      welcome += "SetColorQuartile2 R G B : new color for quartil two\n";
-      welcome += "SetColorQuartile3 R G B : new color for quartil three\n";
-      welcome += "SetColorQuartile4 R G B : new color for quartil four\n";
+      welcome += "SetColorLow R G B : new color for low values\n";
+      welcome += "SetColorMedium R G B : new color for medium values\n";
+      welcome += "SetColorLarge R G B : new color for large values\n";
+      welcome += "SetColorHigh R G B : new color for very high values\n";
       bot.sendMessage(chat_id, welcome, "Markdown");
     }
   }
@@ -932,49 +944,40 @@ void ring(int sensor)
 
 void RING_LIGHT()
 {
-  if (lightValue > 800)
+  if (lightValue > 1200)
   {
     for (int i = 0; i < 12; i++)
-      pixels.setPixelColor(i, pixels.Color(quartile4[0], quartile4[1], quartile4[2]));
+      pixels.setPixelColor(i, pixels.Color(colorHigh[0], colorHigh[1], colorHigh[2]));
+
+  }
+  else if (lightValue > 900)
+  {
+    for (int i = 0; i < 12; i++)
+      pixels.setPixelColor(i, pixels.Color(colorLarge[0], colorLarge[1], colorLarge[2]));
     /*
     for(int i=0; i<3; i++)
-      pixels.setPixelColor(i, pixels.Color(quartile1[0], quartile1[1], quartile1[2]));
+      pixels.setPixelColor(i, pixels.Color(colorLow[0], colorLow[1], colorLow[2]));
     for(int i=3; i<6; i++)
-      pixels.setPixelColor(i, pixels.Color(quartile2[0], quartile2[1], quartile2[2]));
+      pixels.setPixelColor(i, pixels.Color(colorMedium[0], colorMedium[1], colorMedium[2]));
     for(int i=6; i<9; i++)
-      pixels.setPixelColor(i, pixels.Color(quartile3[0], quartile3[1], quartile3[2]));
-    for(int i=9; i<12; i++)
-      pixels.setPixelColor(i, pixels.Color(quartile4[0], quartile4[1], quartile4[2]));
-      */
+      pixels.setPixelColor(i, pixels.Color(colorLarge[0], colorLarge[1], colorLarge[2]));
+    */
   }
   else if (lightValue > 600)
   {
     for (int i = 0; i < 12; i++)
-      pixels.setPixelColor(i, pixels.Color(quartile3[0], quartile3[1], quartile3[2]));
+      pixels.setPixelColor(i, pixels.Color(colorMedium[0], colorMedium[1], colorMedium[2]));
     /*
     for(int i=0; i<3; i++)
-      pixels.setPixelColor(i, pixels.Color(quartile1[0], quartile1[1], quartile1[2]));
+      pixels.setPixelColor(i, pixels.Color(colorLow[0], colorLow[1], colorLow[2]));
     for(int i=3; i<6; i++)
-      pixels.setPixelColor(i, pixels.Color(quartile2[0], quartile2[1], quartile2[2]));
-    for(int i=6; i<9; i++)
-      pixels.setPixelColor(i, pixels.Color(quartile3[0], quartile3[1], quartile3[2]));
-    */
-  }
-  else if (lightValue > 400)
-  {
-    for (int i = 0; i < 12; i++)
-      pixels.setPixelColor(i, pixels.Color(quartile2[0], quartile2[1], quartile2[2]));
-    /*
-    for(int i=0; i<3; i++)
-      pixels.setPixelColor(i, pixels.Color(quartile1[0], quartile1[1], quartile1[2]));
-    for(int i=3; i<6; i++)
-      pixels.setPixelColor(i, pixels.Color(quartile2[0], quartile2[1], quartile2[2]));
+      pixels.setPixelColor(i, pixels.Color(colorMedium[0], colorMedium[1], colorMedium[2]));
     */
   }
   else
   {
     for (int i = 0; i < 12; i++)
-      pixels.setPixelColor(i, pixels.Color(quartile1[0], quartile1[1], quartile1[2]));
+      pixels.setPixelColor(i, pixels.Color(colorLow[0], colorLow[1], colorLow[2]));
   }
   pixels.show();
 }
@@ -984,22 +987,22 @@ void RING_CO2()
   if (CO2Value > 800)
   {
     for (int i = 0; i < 12; i++)
-      pixels.setPixelColor(i, pixels.Color(quartile4[0], quartile4[1], quartile4[2]));
+      pixels.setPixelColor(i, pixels.Color(colorHigh[0], colorHigh[1], colorHigh[2]));
   }
   else if (CO2Value > 600)
   {
     for (int i = 0; i < 12; i++)
-      pixels.setPixelColor(i, pixels.Color(quartile3[0], quartile3[1], quartile3[2]));
+      pixels.setPixelColor(i, pixels.Color(colorLarge[0], colorLarge[1], colorLarge[2]));
   }
   else if (CO2Value > 400)
   {
     for (int i = 0; i < 12; i++)
-      pixels.setPixelColor(i, pixels.Color(quartile2[0], quartile2[1], quartile2[2]));
+      pixels.setPixelColor(i, pixels.Color(colorMedium[0], colorMedium[1], colorMedium[2]));
   }
   else
   {
     for (int i = 0; i < 12; i++)
-      pixels.setPixelColor(i, pixels.Color(quartile1[0], quartile1[1], quartile1[2]));
+      pixels.setPixelColor(i, pixels.Color(colorLow[0], colorLow[1], colorLow[2]));
   }
   pixels.show();
 }
@@ -1009,22 +1012,22 @@ void RING_TEMP()
   if (tempValue > 800)
   {
     for (int i = 0; i < 12; i++)
-      pixels.setPixelColor(i, pixels.Color(quartile4[0], quartile4[1], quartile4[2]));
+      pixels.setPixelColor(i, pixels.Color(colorHigh[0], colorHigh[1], colorHigh[2]));
   }
   else if (tempValue > 600)
   {
     for (int i = 0; i < 12; i++)
-      pixels.setPixelColor(i, pixels.Color(quartile3[0], quartile3[1], quartile3[2]));
+      pixels.setPixelColor(i, pixels.Color(colorLarge[0], colorLarge[1], colorLarge[2]));
   }
   else if (tempValue > 400)
   {
     for (int i = 0; i < 12; i++)
-      pixels.setPixelColor(i, pixels.Color(quartile2[0], quartile2[1], quartile2[2]));
+      pixels.setPixelColor(i, pixels.Color(colorMedium[0], colorMedium[1], colorMedium[2]));
   }
   else
   {
     for (int i = 0; i < 12; i++)
-      pixels.setPixelColor(i, pixels.Color(quartile1[0], quartile1[1], quartile1[2]));
+      pixels.setPixelColor(i, pixels.Color(colorLow[0], colorLow[1], colorLow[2]));
   }
   pixels.show();
 }
@@ -1034,22 +1037,22 @@ void RING_HUM()
   if (humidityValue > 800)
   {
     for (int i = 0; i < 12; i++)
-      pixels.setPixelColor(i, pixels.Color(quartile4[0], quartile4[1], quartile4[2]));
+      pixels.setPixelColor(i, pixels.Color(colorHigh[0], colorHigh[1], colorHigh[2]));
   }
   else if (humidityValue > 600)
   {
     for (int i = 0; i < 12; i++)
-      pixels.setPixelColor(i, pixels.Color(quartile3[0], quartile3[1], quartile3[2]));
+      pixels.setPixelColor(i, pixels.Color(colorLarge[0], colorLarge[1], colorLarge[2]));
   }
   else if (humidityValue > 400)
   {
     for (int i = 0; i < 12; i++)
-      pixels.setPixelColor(i, pixels.Color(quartile2[0], quartile2[1], quartile2[2]));
+      pixels.setPixelColor(i, pixels.Color(colorMedium[0], colorMedium[1], colorMedium[2]));
   }
   else
   {
     for (int i = 0; i < 12; i++)
-      pixels.setPixelColor(i, pixels.Color(quartile1[0], quartile1[1], quartile1[2]));
+      pixels.setPixelColor(i, pixels.Color(colorLow[0], colorLow[1], colorLow[2]));
   }
   pixels.show();
 }
@@ -1059,22 +1062,22 @@ void RING_SOILHUM()
   if (soilHumidityValue > 800)
   {
     for (int i = 0; i < 12; i++)
-      pixels.setPixelColor(i, pixels.Color(quartile4[0], quartile4[1], quartile4[2]));
+      pixels.setPixelColor(i, pixels.Color(colorHigh[0], colorHigh[1], colorHigh[2]));
   }
   else if (soilHumidityValue > 600)
   {
     for (int i = 0; i < 12; i++)
-      pixels.setPixelColor(i, pixels.Color(quartile3[0], quartile3[1], quartile3[2]));
+      pixels.setPixelColor(i, pixels.Color(colorLarge[0], colorLarge[1], colorLarge[2]));
   }
   else if (soilHumidityValue > 400)
   {
     for (int i = 0; i < 12; i++)
-      pixels.setPixelColor(i, pixels.Color(quartile2[0], quartile2[1], quartile2[2]));
+      pixels.setPixelColor(i, pixels.Color(colorMedium[0], colorMedium[1], colorMedium[2]));
   }
   else
   {
     for (int i = 0; i < 3; i++)
-      pixels.setPixelColor(i, pixels.Color(quartile1[0], quartile1[1], quartile1[2]));
+      pixels.setPixelColor(i, pixels.Color(colorLow[0], colorLow[1], colorLow[2]));
   }
   pixels.show();
 }
@@ -1084,22 +1087,22 @@ void RING_SOILTEM()
   if (soilTemperatureValue > 800)
   {
     for (int i = 0; i < 12; i++)
-      pixels.setPixelColor(i, pixels.Color(quartile4[0], quartile4[1], quartile4[2]));
+      pixels.setPixelColor(i, pixels.Color(colorHigh[0], colorHigh[1], colorHigh[2]));
   }
   else if (soilTemperatureValue > 600)
   {
     for (int i = 0; i < 12; i++)
-      pixels.setPixelColor(i, pixels.Color(quartile3[0], quartile3[1], quartile3[2]));
+      pixels.setPixelColor(i, pixels.Color(colorLarge[0], colorLarge[1], colorLarge[2]));
   }
   else if (soilTemperatureValue > 400)
   {
     for (int i = 0; i < 12; i++)
-      pixels.setPixelColor(i, pixels.Color(quartile2[0], quartile2[1], quartile2[2]));
+      pixels.setPixelColor(i, pixels.Color(colorMedium[0], colorMedium[1], colorMedium[2]));
   }
   else
   {
     for (int i = 0; i < 12; i++)
-      pixels.setPixelColor(i, pixels.Color(quartile1[0], quartile1[1], quartile1[2]));
+      pixels.setPixelColor(i, pixels.Color(colorLow[0], colorLow[1], colorLow[2]));
   }
   pixels.show();
 }

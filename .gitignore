@@ -33,7 +33,6 @@
 
 # Credentials fils
 V1_TeaSpike/include/credentials.h
-V1_TeaSpike/include/configuration.h
 
 #VSCode
 V1_TeaSpike/.pio
