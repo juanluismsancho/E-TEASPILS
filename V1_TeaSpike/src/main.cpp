@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <credentials.h>
 #include <configuration.h>
-#include <Wire.h> 
+#include <Wire.h>
 #include <SparkFun_SCD30_Arduino_Library.h>
 #include "ThingsBoard.h"
 #include <SPI.h>
@@ -40,7 +40,7 @@ unsigned long bot_lasttime; // last time messages' scan has been done
 RTC_DS3231 rtc;
 
 // SD
-//boolean sdActiva = false;
+// boolean sdActiva = false;
 File logData;
 int hora = 0;
 
@@ -50,7 +50,7 @@ SCD30 airSensor;
 // veml7700. Light
 Adafruit_VEML7700 veml = Adafruit_VEML7700();
 
-//DS18B20. Soil Temperature
+// DS18B20. Soil Temperature
 OneWire oneWireObject(SOILTEMP_SENSOR_PIN);
 DallasTemperature soilTemperatureSensor(&oneWireObject);
 
@@ -60,10 +60,10 @@ Adafruit_NeoPixel pixel(1, 4, NEO_GRB + NEO_KHZ800);
 // LED_RING
 Adafruit_NeoPixel pixels(NUMPIXELS, RING_PIN, NEO_GRB + NEO_KHZ800);
 int ringElement = 1;
-int colorLow[] = {0, 240, 255};     
-int colorMedium[] = {0, 255, 121}; 
-int colorLarge[] = {255, 195, 0}; 
-int colorHigh[] = {255, 0, 0}; 
+int colorLow[] = {0, 240, 255};
+int colorMedium[] = {0, 255, 121};
+int colorLarge[] = {255, 195, 0};
+int colorHigh[] = {255, 0, 0};
 
 // OLED
 Adafruit_SH1106 display(21, 22);
@@ -72,8 +72,8 @@ Adafruit_SH1106 display(21, 22);
 int ambCont = 0;
 int soilCont = 0;
 
-//Period of data upload
-int sendPeriod=DEFAULT_PERIOD;
+// Period of data upload
+int sendPeriod = DEFAULT_PERIOD;
 
 int lightValue = 0;
 int CO2Value = 0;
@@ -84,7 +84,7 @@ int soilTemperatureValue = 0;
 
 int presentMoment = 0;
 int displayMode = 1;
-int fixedSensor=1;  //Inicialización arbitraria
+int fixedSensor = 1; // Inicialización arbitraria
 
 void initDisplay();
 void initRing();
@@ -113,6 +113,7 @@ void RING_HUM();
 void RING_SOILHUM();
 void RING_SOILTEM();
 void noInternetMsg();
+void firstRead();
 
 void setup()
 {
@@ -122,12 +123,12 @@ void setup()
 
   delay(2000);
 
-  checkSD();  // Se comprueba si hay microSD evitando continuar hasta que no se inserte. Espera Activa
+  checkSD(); // Se comprueba si hay microSD evitando continuar hasta que no se inserte. Espera Activa
 
   writeFile(SD, "/log.txt", LogInitialMessage.c_str());
   // logData = SD.open("/log.txt", FILE_WRITE);
 
-  conectIOT();   // Se conecta a WIFI y la plataforma IoT
+  conectIOT(); // Se conecta a WIFI y la plataforma IoT
 
   initCo2();
 
@@ -136,6 +137,8 @@ void setup()
   initLight();
 
   initClock();
+
+  firstRead();
 }
 
 void loop()
@@ -227,20 +230,27 @@ void initCo2()
   }
 }
 
-void initSoilTemp(){
+void initSoilTemp()
+{
   soilTemperatureSensor.begin();
-  while (soilTemperatureSensor.getDeviceCount()==0)
+  soilTemperatureSensor.requestTemperatures();
+
+  while (soilTemperatureSensor.getTempCByIndex(0) == -127.00)
   {
+    //soilTemperatureSensor.begin();
+    soilTemperatureSensor.requestTemperatures();
     display.clearDisplay();
-    display.setCursor(45, 24);
-    display.println(" No se ha ");
-    display.setCursor(45, 32);
-    display.println(" detectado");
+    display.setCursor(0, 24);
+    display.println("The following sensor has not been detected");
     display.setCursor(45, 40);
-    display.println("   DS18B20  ");
+    display.println("DS18B20");
     display.display();
-    delay(500);
-  } 
+
+    // Serial.println("NO");
+    delay(750);
+  }
+
+  display.clearDisplay();
 }
 
 void initLight()
@@ -291,8 +301,8 @@ void checkSD()
   SD.end();
   while (!SD.begin(5))
   {
-    //sdActiva = false;
-    //  digitalWrite(SD_PIN,HIGH);
+    // sdActiva = false;
+    //   digitalWrite(SD_PIN,HIGH);
     display.clearDisplay();
     display.setCursor(45, 24);
     display.println("Problema");
@@ -301,10 +311,10 @@ void checkSD()
     display.display();
     delay(100);
   }
-  //sdActiva = true;
+  // sdActiva = true;
 }
 
-//Writes data into SD card and prints a log on Serial console
+// Writes data into SD card and prints a log on Serial console
 void writeFile(fs::FS &fs, const char *path, const char *message)
 {
   Serial.printf("Writing file: %s\n", path);
@@ -350,11 +360,13 @@ String completeDate(int mode)
 {
   DateTime date = rtc.now();
   String formattedDate;
-  if (mode==2){
+  if (mode == 2)
+  {
     formattedDate = String(date.year()) + '/' + String(date.month()) + '/' + String(date.day()) + ' ' + String(date.hour()) + ':' + String(date.minute()) + ':' + String(date.second());
   }
-  else{
-    formattedDate=date.timestamp();
+  else
+  {
+    formattedDate = date.timestamp();
   }
   return formattedDate;
 }
@@ -367,12 +379,13 @@ void conectIOT()
 
     for (int i = 0; i < 10 && WiFi.status() != WL_CONNECTED; i++)
     {
-      delay(500);
+      delay(750);
     }
 
     pixel.setPixelColor(0, pixel.Color(255, 0, 0));
     pixel.show();
-    noInternetMsg();
+    if (WiFi.status() != WL_CONNECTED)
+      noInternetMsg();
 
     int i = 0;
     while (i < 5 && WiFi.status() != WL_CONNECTED)
@@ -415,6 +428,7 @@ void sensorsRead()
 
   if (soilCont == soilPeriod)
   {
+    soilTemperatureSensor.requestTemperatures();
     soilHumidityValue = analogRead(SOILHUMIDITY_SENSOR_PIN);
     soilTemperatureValue = static_cast<int>(round(soilTemperatureSensor.getTempCByIndex(0)));
 
@@ -634,19 +648,20 @@ void fixSensor(int sensor)
 
 void logDataset()
 {
-  String writeLog = "\n" + completeDate(1) + ";" + CO2Value + ";" + humidityValue + ";" + lightValue + ";" + soilHumidityValue  + ";" + soilTemperatureValue  + ";" + tempValue;
+  String writeLog = "\n" + completeDate(1) + ";" + CO2Value + ";" + humidityValue + ";" + lightValue + ";" + soilHumidityValue + ";" + soilTemperatureValue + ";" + tempValue;
 
   appendFile(SD, "/log.txt", writeLog.c_str());
 }
 
-void uploadData(){
-    Serial.println("ENVIO DATOS");
-    tb.sendTelemetryInt("co2", CO2Value);
-    tb.sendTelemetryInt("temperature", tempValue);
-    tb.sendTelemetryInt("humidity", humidityValue);
-    tb.sendTelemetryInt("light", lightValue);
-    tb.sendTelemetryInt("soilTemp", soilTemperatureValue);
-    tb.sendTelemetryInt("soilHumidity", soilHumidityValue);
+void uploadData()
+{
+  Serial.println("ENVIO DATOS");
+  tb.sendTelemetryInt("co2", CO2Value);
+  tb.sendTelemetryInt("temperature", tempValue);
+  tb.sendTelemetryInt("humidity", humidityValue);
+  tb.sendTelemetryInt("light", lightValue);
+  tb.sendTelemetryInt("soilTemp", soilTemperatureValue);
+  tb.sendTelemetryInt("soilHumidity", soilHumidityValue);
 }
 
 void checkBot()
@@ -834,9 +849,10 @@ void handleNewMessages(int numNewMessages)
       String message = "Soil Temperature: " + (String)soilTemperatureValue;
       bot.sendMessage(chat_id, message, "");
     }
-    if (text == "/setPeriod"){
-      sendPeriod=param1.toInt();
-      String message =  "Period of data uploading setted to " + (String)sendPeriod + " secs";
+    if (text == "/setPeriod")
+    {
+      sendPeriod = param1.toInt();
+      String message = "Period of data uploading setted to " + (String)sendPeriod + " secs";
       bot.sendMessage(chat_id, message, "");
     }
     if (text == "SetColorLow")
@@ -948,7 +964,6 @@ void RING_LIGHT()
   {
     for (int i = 0; i < 12; i++)
       pixels.setPixelColor(i, pixels.Color(colorHigh[0], colorHigh[1], colorHigh[2]));
-
   }
   else if (lightValue > 900)
   {
@@ -1107,13 +1122,26 @@ void RING_SOILTEM()
   pixels.show();
 }
 
-void noInternetMsg(){
-    display.clearDisplay();
-    display.setCursor(45, 24);
-    display.println("Internet Connection Failed ");
-    display.setCursor(0, 32);
-    display.println("Please, make sure that the following network is aviable");
-    display.setCursor(45, 40);
-    display.println(WIFI_NAME);
-    display.display();
+void noInternetMsg()
+{
+  display.clearDisplay();
+  display.setCursor(0, 0);
+  display.println("Internet Connection Failed ");
+  display.setCursor(0, 16);
+  display.println("Please, make sure that the following network is aviable");
+  display.setCursor(50, 48);
+  display.println(WIFI_NAME);
+  display.display();
+}
+
+void firstRead()
+{
+  soilTemperatureSensor.requestTemperatures();
+
+  lightValue = veml.readLux();
+  CO2Value = airSensor.getCO2();
+  tempValue = airSensor.getTemperature();
+  humidityValue = airSensor.getHumidity();
+  soilHumidityValue = analogRead(SOILHUMIDITY_SENSOR_PIN);
+  soilTemperatureValue = static_cast<int>(round(soilTemperatureSensor.getTempCByIndex(0)));
 }
