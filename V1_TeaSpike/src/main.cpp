@@ -16,18 +16,12 @@
 #include <OneWire.h>
 #include <DallasTemperature.h>
 
-// Borrable?
-// int pinInternet = 4;
-// boolean internetActivo = false; //No se consulta
-
 // thingsboard
 #define TOKEN tokenDevice
 #define THINGSBOARD_SERVER thingsboardServer
 WiFiClient espClient;
 ThingsBoard tb(espClient);
 int status = WL_IDLE_STATUS;
-// boolean thingsboardActivo = false; // Borrables. No se hace ninguna comprobacion o consulta de estas variables
-// int pinThingsboard = 16;           // Borrables
 
 // telegram
 #define BOT_TOKEN tokenBot
@@ -40,7 +34,6 @@ unsigned long bot_lasttime; // last time messages' scan has been done
 RTC_DS3231 rtc;
 
 // SD
-// boolean sdActiva = false;
 File logData;
 int hora = 0;
 
@@ -126,7 +119,6 @@ void setup()
   checkSD(); // Se comprueba si hay microSD evitando continuar hasta que no se inserte. Espera Activa
 
   writeFile(SD, "/log.txt", LogInitialMessage.c_str());
-  // logData = SD.open("/log.txt", FILE_WRITE);
 
   conectIOT(); // Se conecta a WIFI y la plataforma IoT
 
@@ -148,11 +140,6 @@ void loop()
   {
     conectIOT();
   }
-  else
-  {
-    // internetActivo = true;
-    // thingsboardActivo = true;
-  }
 
   checkBot();
 
@@ -167,7 +154,6 @@ void loop()
 
   logDataset();
 
-  // if(thingsboardActivo && presentMoment==envio)
   if (presentMoment == sendPeriod)
   {
     uploadData();
@@ -301,15 +287,18 @@ void checkSD()
   SD.end();
   while (!SD.begin(5))
   {
-    // sdActiva = false;
-    //   digitalWrite(SD_PIN,HIGH);
     display.clearDisplay();
-    display.setCursor(45, 24);
-    display.println("Problema");
-    display.setCursor(25, 32);
-    display.println("en la SD");
+    display.setCursor(0, 10);
+    display.println("SD card not found");
+    display.setCursor(0, 40);
+    display.println("Please, insert a SD  card");
     display.display();
-    delay(100);
+    pixel.setPixelColor(0, pixel.Color(255, 102, 204));
+    pixel.show();
+    delay(500);
+    pixel.clear();
+    delay(500);
+
   }
   // sdActiva = true;
 }
@@ -401,15 +390,15 @@ void conectIOT()
     {
       if (!tb.connect(THINGSBOARD_SERVER, TOKEN))
       {
-        // thingsboardActivo = false;
         pixel.setPixelColor(0, pixel.Color(204, 51, 255));
         pixel.show();
+        Serial.println("Connection to tb failed");
       }
       else
       {
-        // thingsboardActivo = true;
         pixel.setPixelColor(0, pixel.Color(0, 255, 0));
         pixel.show();
+        Serial.println("Connection to tb done");
       }
     }
   }
@@ -925,13 +914,6 @@ void handleNewMessages(int numNewMessages)
   }
 }
 
-/* lightValue-->1;
- CO2Value-->2;
- tempValue-->3;
- humidityValue-->4;
- soilHumidityValue-->5;
- soilTemperatureValue-->6;
-*/
 void ring(int sensor)
 {
   pixels.clear();
@@ -960,39 +942,26 @@ void ring(int sensor)
 
 void RING_LIGHT()
 {
-  if (lightValue > 1200)
+  if (lightValue > 300)
   {
-    for (int i = 0; i < 12; i++)
-      pixels.setPixelColor(i, pixels.Color(colorHigh[0], colorHigh[1], colorHigh[2]));
-  }
-  else if (lightValue > 900)
-  {
-    for (int i = 0; i < 12; i++)
-      pixels.setPixelColor(i, pixels.Color(colorLarge[0], colorLarge[1], colorLarge[2]));
-    /*
-    for(int i=0; i<3; i++)
+    for (int i = 0; i < NUMPIXELS; i++)
       pixels.setPixelColor(i, pixels.Color(colorLow[0], colorLow[1], colorLow[2]));
-    for(int i=3; i<6; i++)
-      pixels.setPixelColor(i, pixels.Color(colorMedium[0], colorMedium[1], colorMedium[2]));
-    for(int i=6; i<9; i++)
-      pixels.setPixelColor(i, pixels.Color(colorLarge[0], colorLarge[1], colorLarge[2]));
-    */
   }
-  else if (lightValue > 600)
+  else if (lightValue > 200)
   {
-    for (int i = 0; i < 12; i++)
+    for (int i = 0; i < NUMPIXELS-3; i++)
       pixels.setPixelColor(i, pixels.Color(colorMedium[0], colorMedium[1], colorMedium[2]));
-    /*
-    for(int i=0; i<3; i++)
-      pixels.setPixelColor(i, pixels.Color(colorLow[0], colorLow[1], colorLow[2]));
-    for(int i=3; i<6; i++)
-      pixels.setPixelColor(i, pixels.Color(colorMedium[0], colorMedium[1], colorMedium[2]));
-    */
+    
+  }
+  else if (lightValue > 100)
+  {
+    for (int i = 0; i < NUMPIXELS-6; i++)
+      pixels.setPixelColor(i, pixels.Color(colorLarge[0], colorLarge[1], colorLarge[2]));
   }
   else
   {
-    for (int i = 0; i < 12; i++)
-      pixels.setPixelColor(i, pixels.Color(colorLow[0], colorLow[1], colorLow[2]));
+    for (int i = 0; i < NUMPIXELS-9; i++)
+      pixels.setPixelColor(i, pixels.Color(colorHigh[0], colorHigh[1], colorHigh[2]));
   }
   pixels.show();
 }
@@ -1001,22 +970,22 @@ void RING_CO2()
 {
   if (CO2Value > 800)
   {
-    for (int i = 0; i < 12; i++)
+    for (int i = 0; i < NUMPIXELS; i++)
       pixels.setPixelColor(i, pixels.Color(colorHigh[0], colorHigh[1], colorHigh[2]));
   }
   else if (CO2Value > 600)
   {
-    for (int i = 0; i < 12; i++)
+    for (int i = 0; i < NUMPIXELS - 3; i++)
       pixels.setPixelColor(i, pixels.Color(colorLarge[0], colorLarge[1], colorLarge[2]));
   }
   else if (CO2Value > 400)
   {
-    for (int i = 0; i < 12; i++)
+    for (int i = 0; i < NUMPIXELS - 6; i++)
       pixels.setPixelColor(i, pixels.Color(colorMedium[0], colorMedium[1], colorMedium[2]));
   }
   else
   {
-    for (int i = 0; i < 12; i++)
+    for (int i = 0; i < NUMPIXELS - 9; i++)
       pixels.setPixelColor(i, pixels.Color(colorLow[0], colorLow[1], colorLow[2]));
   }
   pixels.show();
@@ -1024,24 +993,24 @@ void RING_CO2()
 
 void RING_TEMP()
 {
-  if (tempValue > 800)
+  if (tempValue > 27)
   {
-    for (int i = 0; i < 12; i++)
+    for (int i = 0; i < NUMPIXELS; i++)
       pixels.setPixelColor(i, pixels.Color(colorHigh[0], colorHigh[1], colorHigh[2]));
   }
-  else if (tempValue > 600)
+  else if (tempValue > 23)
   {
-    for (int i = 0; i < 12; i++)
+    for (int i = 0; i < NUMPIXELS-3; i++)
       pixels.setPixelColor(i, pixels.Color(colorLarge[0], colorLarge[1], colorLarge[2]));
   }
-  else if (tempValue > 400)
+  else if (tempValue > 20)
   {
-    for (int i = 0; i < 12; i++)
+    for (int i = 0; i < NUMPIXELS-6; i++)
       pixels.setPixelColor(i, pixels.Color(colorMedium[0], colorMedium[1], colorMedium[2]));
   }
   else
   {
-    for (int i = 0; i < 12; i++)
+    for (int i = 0; i < NUMPIXELS-9; i++)
       pixels.setPixelColor(i, pixels.Color(colorLow[0], colorLow[1], colorLow[2]));
   }
   pixels.show();
@@ -1049,49 +1018,49 @@ void RING_TEMP()
 
 void RING_HUM()
 {
-  if (humidityValue > 800)
+  if (humidityValue > 60)
   {
-    for (int i = 0; i < 12; i++)
-      pixels.setPixelColor(i, pixels.Color(colorHigh[0], colorHigh[1], colorHigh[2]));
+    for (int i = 0; i < NUMPIXELS; i++)
+      pixels.setPixelColor(i, pixels.Color(colorLow[0], colorLow[1], colorLow[2]));
   }
-  else if (humidityValue > 600)
+  else if (humidityValue > 40)
   {
-    for (int i = 0; i < 12; i++)
-      pixels.setPixelColor(i, pixels.Color(colorLarge[0], colorLarge[1], colorLarge[2]));
-  }
-  else if (humidityValue > 400)
-  {
-    for (int i = 0; i < 12; i++)
+    for (int i = 0; i < NUMPIXELS-3; i++)
       pixels.setPixelColor(i, pixels.Color(colorMedium[0], colorMedium[1], colorMedium[2]));
+  }
+  else if (humidityValue > 30)
+  {
+    for (int i = 0; i < NUMPIXELS-6; i++)
+      pixels.setPixelColor(i, pixels.Color(colorLarge[0], colorLarge[1], colorLarge[2]));
   }
   else
   {
-    for (int i = 0; i < 12; i++)
-      pixels.setPixelColor(i, pixels.Color(colorLow[0], colorLow[1], colorLow[2]));
+    for (int i = 0; i < NUMPIXELS-9; i++)
+      pixels.setPixelColor(i, pixels.Color(colorHigh[0], colorHigh[1], colorHigh[2]));
   }
   pixels.show();
 }
 
 void RING_SOILHUM()
 {
-  if (soilHumidityValue > 800)
+  if (soilHumidityValue > 60)
   {
-    for (int i = 0; i < 12; i++)
+    for (int i = 0; i < NUMPIXELS; i++)
       pixels.setPixelColor(i, pixels.Color(colorHigh[0], colorHigh[1], colorHigh[2]));
   }
-  else if (soilHumidityValue > 600)
+  else if (soilHumidityValue > 40)
   {
-    for (int i = 0; i < 12; i++)
+    for (int i = 0; i < NUMPIXELS - 3; i++)
       pixels.setPixelColor(i, pixels.Color(colorLarge[0], colorLarge[1], colorLarge[2]));
   }
-  else if (soilHumidityValue > 400)
+  else if (soilHumidityValue > 30)
   {
-    for (int i = 0; i < 12; i++)
+    for (int i = 0; i < NUMPIXELS- 6; i++)
       pixels.setPixelColor(i, pixels.Color(colorMedium[0], colorMedium[1], colorMedium[2]));
   }
   else
   {
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < NUMPIXELS - 9; i++)
       pixels.setPixelColor(i, pixels.Color(colorLow[0], colorLow[1], colorLow[2]));
   }
   pixels.show();
@@ -1145,3 +1114,11 @@ void firstRead()
   soilHumidityValue = analogRead(SOILHUMIDITY_SENSOR_PIN);
   soilTemperatureValue = static_cast<int>(round(soilTemperatureSensor.getTempCByIndex(0)));
 }
+
+/* lightValue-->1;
+ CO2Value-->2;
+ tempValue-->3;
+ humidityValue-->4;
+ soilHumidityValue-->5;
+ soilTemperatureValue-->6;
+*/
