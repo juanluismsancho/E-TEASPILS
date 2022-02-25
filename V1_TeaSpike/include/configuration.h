@@ -3,7 +3,7 @@
 
 #define BAUD_RATE 115200
 
-#define NUMPIXELS 8
+#define NUMPIXELS 12
 #define RING_PIN 13 
 
 //cadencia por sensor en segundos
