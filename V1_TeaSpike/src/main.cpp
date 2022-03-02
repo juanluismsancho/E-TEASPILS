@@ -19,8 +19,11 @@
 // thingsboard
 #define TOKEN tokenDevice
 #define THINGSBOARD_SERVER thingsboardServer
+#define TOKEN_UPF tokenDevice_UPF
+#define THINGSBOARD_SERVER_UPF thingsboardServer_UPF
 WiFiClient espClient;
 ThingsBoard tb(espClient);
+ThingsBoard tbUPF(espClient);
 int status = WL_IDLE_STATUS;
 
 // telegram
@@ -136,7 +139,7 @@ void setup()
 void loop()
 {
   checkSD();
-  if (WiFi.status() != WL_CONNECTED || !tb.connected())
+  if (WiFi.status() != WL_CONNECTED || !tb.connected() || !tbUPF.connected())
   {
     conectIOT();
   }
@@ -386,9 +389,9 @@ void conectIOT()
   else
   {
     secured_client.setCACert(TELEGRAM_CERTIFICATE_ROOT); // Add root certificate for api.telegram.org
-    if (!tb.connected())
+    if (!tb.connected() || !tbUPF.connected())
     {
-      if (!tb.connect(THINGSBOARD_SERVER, TOKEN))
+      if (!tb.connect(THINGSBOARD_SERVER, TOKEN) || !tbUPF.connect(THINGSBOARD_SERVER_UPF,TOKEN_UPF))
       {
         pixel.setPixelColor(0, pixel.Color(204, 51, 255));
         pixel.show();
@@ -651,6 +654,13 @@ void uploadData()
   tb.sendTelemetryInt("light", lightValue);
   tb.sendTelemetryInt("soilTemp", soilTemperatureValue);
   tb.sendTelemetryInt("soilHumidity", soilHumidityValue);
+
+  tbUPF.sendTelemetryInt("co2", CO2Value);
+  tbUPF.sendTelemetryInt("temperature", tempValue);
+  tbUPF.sendTelemetryInt("humidity", humidityValue);
+  tbUPF.sendTelemetryInt("light", lightValue);
+  tbUPF.sendTelemetryInt("soilTemp", soilTemperatureValue);
+  tbUPF.sendTelemetryInt("soilHumidity", soilHumidityValue);
 }
 
 void checkBot()
