@@ -48,7 +48,7 @@ OneWire oneWireObject(SOILTEMP_SENSOR_PIN);
 DallasTemperature soilTemperatureSensor(&oneWireObject);
 
 // LED
-Adafruit_NeoPixel pixel(1, 4, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel pixel(1, NEOPIXEL_PIN, NEO_GRB + NEO_KHZ800);
 
 // LED_RING
 Adafruit_NeoPixel pixels(NUMPIXELS, RING_PIN, NEO_GRB + NEO_KHZ800);
