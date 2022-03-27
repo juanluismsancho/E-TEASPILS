@@ -16,6 +16,17 @@
 #include <OneWire.h>
 #include <DallasTemperature.h>
 
+//Error Flags
+bool eLEDSTRIPE=true;
+bool eDISPLAY=true;
+bool eSCD30=true;
+bool eDS18B20=true;
+bool eVEML7700=true;
+bool eRTC=true;
+bool eWIFI=true;
+bool eTB=true;
+
+
 // thingsboard
 #define TOKEN tokenDevice
 #define THINGSBOARD_SERVER thingsboardServer
@@ -169,6 +180,7 @@ void loop()
 
 void initRing()
 {
+
   pixels.begin(); // INITIALIZE NeoPixel strip object (REQUIRED)
   pixels.clear();
 
@@ -177,10 +189,24 @@ void initRing()
 
   pixel.setPixelColor(0, pixel.Color(0, 0, 0));
   pixel.show();
+
+    if ((int)pixels.getPixels()==12)
+  {
+    eLEDSTRIPE=false;
+  }
+
 }
 
 void initDisplay()
 {
+  //Check Display Connection 
+  Wire.beginTransmission(60);
+  int error = Wire.endTransmission();
+  if (error==0)
+  {
+    eDISPLAY=false;
+  }
+
   display.begin(SH1106_SWITCHCAPVCC, 0x3C);
   display.clearDisplay();
   display.setTextSize(1);
@@ -188,9 +214,9 @@ void initDisplay()
   display.setCursor(45, 24);
   display.println("Starting");
   display.setCursor(25, 32);
-  display.println("TEASPIL system");
+  display.println("TEASPILS system");
   display.display();
-  delay(3000);
+  delay(2000);
 
   // miniature bitmap display
   display.clearDisplay();
@@ -202,7 +228,7 @@ void initDisplay()
 void initCo2()
 {
   Wire.begin();
-  while (airSensor.begin() == false)
+  if (airSensor.begin() == false)
   {
     display.clearDisplay();
     display.setCursor(45, 24);
@@ -212,7 +238,10 @@ void initCo2()
     display.setCursor(45, 40);
     display.println("   SCD30  ");
     display.display();
-    delay(500);
+    delay(3000);
+  }
+  else{
+    eSCD30=false;
   }
 }
 
@@ -221,9 +250,8 @@ void initSoilTemp()
   soilTemperatureSensor.begin();
   soilTemperatureSensor.requestTemperatures();
 
-  while (soilTemperatureSensor.getTempCByIndex(0) == -127.00)
+  if (soilTemperatureSensor.getTempCByIndex(0) == -127.00 || soilTemperatureSensor.getTempCByIndex(0) == 80.00)
   {
-    //soilTemperatureSensor.begin();
     soilTemperatureSensor.requestTemperatures();
     display.clearDisplay();
     display.setCursor(0, 24);
@@ -231,26 +259,29 @@ void initSoilTemp()
     display.setCursor(45, 40);
     display.println("DS18B20");
     display.display();
-
-    // Serial.println("NO");
-    delay(750);
+    delay(3000);
+    display.clearDisplay();
   }
-
-  display.clearDisplay();
+  else{
+    eDS18B20=false;
+  }
 }
 
 void initLight()
 {
-  while (veml.begin() == false)
+  if (veml.begin() == false)
   {
     display.clearDisplay();
-    display.setCursor(45, 24);
-    display.println(" No se ha ");
-    display.setCursor(45, 32);
-    display.println(" detectado");
+    display.setCursor(0, 24);
+    display.println("The following sensor has not been detected");
     display.setCursor(45, 40);
-    display.println(" veml7700 ");
+    display.println("VEML7700");
     display.display();
+    delay(3000);
+    display.clearDisplay();
+  }
+  else{
+    eVEML7700=false;
   }
   veml.setGain(VEML7700_GAIN_1);
   veml.setIntegrationTime(VEML7700_IT_800MS);
@@ -261,16 +292,19 @@ void initLight()
 
 void initClock()
 {
-  while (!rtc.begin())
+  if (!rtc.begin())
   {
     display.clearDisplay();
-    display.setCursor(45, 24);
-    display.println(" No se ha ");
-    display.setCursor(45, 32);
-    display.println(" detectado");
+    display.setCursor(0, 24);
+    display.println("The following component hasn't been detected");
     display.setCursor(45, 40);
-    display.println("   reloj  ");
+    display.println("RTC Clock");
     display.display();
+    delay(3000);
+    display.clearDisplay();
+  }
+  else{
+    eRTC=false;
   }
   // Si se ha perdido la corriente, fijar fecha y hora
   if (rtc.lostPower())
@@ -385,6 +419,7 @@ void conectIOT()
   }
   else
   {
+    eWIFI=false;
     secured_client.setCACert(TELEGRAM_CERTIFICATE_ROOT); // Add root certificate for api.telegram.org
     if (!tb.connected())
     {
@@ -396,6 +431,7 @@ void conectIOT()
       }
       else
       {
+        eTB=false;
         pixel.setPixelColor(0, pixel.Color(0, 255, 0));
         pixel.show();
         Serial.println("Connection to tb done");
@@ -637,8 +673,46 @@ void fixSensor(int sensor)
 
 void logDataset()
 {
-  String writeLog = "\n" + completeDate(1) + ";" + CO2Value + ";" + humidityValue + ";" + lightValue + ";" + soilHumidityValue + ";" + soilTemperatureValue + ";" + tempValue;
+  String writeLog = "\n" + completeDate(1) + ";" + CO2Value + ";" + humidityValue + ";" + lightValue + ";" + soilHumidityValue + ";" + soilTemperatureValue + ";" + tempValue + ";";
 
+  if (!eLEDSTRIPE && !eDISPLAY && !eSCD30 && !eDS18B20 && !eVEML7700 && !eRTC && !eWIFI && !eTB)
+  {
+    writeLog.concat("0 ");
+  }
+  else{
+    if (eLEDSTRIPE)
+    {
+      writeLog.concat("101 ");
+    }
+    if (eDISPLAY)
+    {
+      writeLog.concat("102 ");
+    }
+    if (eSCD30)
+    {
+      writeLog.concat("103 ");
+    }
+    if (eDS18B20)
+    {
+      writeLog.concat("104 ");
+    }
+    if (eVEML7700)
+    {
+      writeLog.concat("105 ");
+    }
+    if (eRTC)
+    {
+      writeLog.concat("106 ");
+    }
+    if (eWIFI)
+    {
+      writeLog.concat("200 ");
+    }
+    else if (eTB)
+    {
+      writeLog.concat("201 ");
+    }
+  }
   appendFile(SD, "/log.txt", writeLog.c_str());
 }
 
