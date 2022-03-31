@@ -29,7 +29,7 @@
   (fp_circle (center 37.6 10.2) (end 39.1 10.2) (layer "Edge.Cuts") (width 0.12) (fill none) (tstamp f4c67df3-763c-4141-be1b-5de814d62315))
   (fp_circle (center 13.8 13.7) (end 15.3 13.7) (layer "Edge.Cuts") (width 0.12) (fill none) (tstamp fc98aaf7-0aba-4c7e-a96d-56e31c31a588))
   (pad "1" thru_hole circle (at 15.2 5) (size 1.524 1.524) (drill 1) (layers *.Cu *.Mask) (tstamp be118b00-015b-445a-8fc5-7bf35350fda8))
-  (pad "2" thru_hole circle (at 15.3 8) (size 1.524 1.524) (drill 1) (layers *.Cu *.Mask) (tstamp 45a58c23-3e6d-4df0-af01-6d5948b0075c))
+  (pad "2" thru_hole circle (at 15.2 8) (size 1.524 1.524) (drill 1) (layers *.Cu *.Mask) (tstamp 45a58c23-3e6d-4df0-af01-6d5948b0075c))
   (pad "3" thru_hole circle (at 18.2 -2.5) (size 1.54 1.54) (drill 1) (layers *.Cu *.Mask) (tstamp 583b0bf3-0699-44db-b975-a241ad040fa4))
   (pad "4" thru_hole circle (at 20.74 -2.5) (size 1.54 1.54) (drill 1) (layers *.Cu *.Mask) (tstamp 312474c5-a081-4cd1-b2e6-730f0718514a))
   (pad "5" thru_hole circle (at 23.28 -2.5) (size 1.54 1.54) (drill 1) (layers *.Cu *.Mask) (tstamp f2c43eeb-76da-49f4-b8e6-cd74ebb3190b))
