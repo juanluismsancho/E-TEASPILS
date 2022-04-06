@@ -379,11 +379,13 @@
         "microvia_drill": 0.1,
         "name": "Alimentacion",
         "nets": [
-          "5V"
+          "Net-(Batterycon1-Pad1)",
+          "Net-(Batterycon1-Pad2)",
+          "Net-(SW1-Pad1)"
         ],
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 0.4,
+        "track_width": 1.3,
         "via_diameter": 0.8,
         "via_drill": 0.4,
         "wire_width": 6.0
