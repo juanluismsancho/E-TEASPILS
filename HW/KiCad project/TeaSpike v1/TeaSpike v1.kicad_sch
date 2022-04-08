@@ -18096,7 +18096,7 @@
     )
   )
 
-  (text "TeaSpike V1.0" (at 176.53 180.34 0)
+  (text "TeaSpike V2.0" (at 176.53 180.34 0)
     (effects (font (size 10.0076 10.0076) italic) (justify left bottom))
     (uuid 0147f16a-c952-4891-8f53-a9fb8cddeb8d)
   )
@@ -18942,7 +18942,7 @@
     (property "Reference" "R2" (id 0) (at 146.05 158.7499 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Value" "1K" (id 1) (at 146.05 161.2899 0)
+    (property "Value" "" (id 1) (at 146.05 161.2899 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" (id 2) (at 141.732 160.02 90)
@@ -18976,7 +18976,7 @@
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid c9ba50c9-67b0-4394-8e9d-a1abf78b9106)
     (property "Reference" "R1" (id 0) (at 132.08 143.51 90))
-    (property "Value" "2K" (id 1) (at 132.08 146.05 90))
+    (property "Value" "" (id 1) (at 132.08 146.05 90))
     (property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" (id 2) (at 132.08 148.082 90)
       (effects (font (size 1.27 1.27)) hide)
     )
@@ -19062,10 +19062,10 @@
       (reference "PowerSupplycon1") (unit 1) (value "Conn_01x03") (footprint "Connector_PinSocket_2.54mm:PinSocket_1x03_P2.54mm_Vertical")
     )
     (path "/c9ba50c9-67b0-4394-8e9d-a1abf78b9106"
-      (reference "R1") (unit 1) (value "2K") (footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal")
+      (reference "R1") (unit 1) (value "1K") (footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal")
     )
     (path "/aecd2b42-4343-4526-8b9d-8ca85518449b"
-      (reference "R2") (unit 1) (value "1K") (footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal")
+      (reference "R2") (unit 1) (value "2K") (footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal")
     )
     (path "/00000000-0000-0000-0000-00006241d575"
       (reference "RTemp1") (unit 1) (value "4K7") (footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal")
