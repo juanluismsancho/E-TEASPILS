@@ -1,0 +1,170 @@
+{
+  "widget": {
+    "isSystemType": true,
+    "bundleAlias": "digital_gauges",
+    "typeAlias": "vertical_bar_justgage",
+    "type": "latest",
+    "title": "New widget",
+    "image": null,
+    "description": null,
+    "sizeX": 2,
+    "sizeY": 3.5,
+    "config": {
+      "datasources": [
+        {
+          "type": "entity",
+          "name": null,
+          "entityAliasId": "5d42fd81-3cc7-d7a3-977d-d6cf1a4e8f40",
+          "filterId": null,
+          "dataKeys": [
+            {
+              "name": "soilHumidity",
+              "type": "timeseries",
+              "label": "soilHumidity",
+              "color": "#2196f3",
+              "settings": {},
+              "_hash": 0.3383163268048923
+            }
+          ]
+        }
+      ],
+      "timewindow": {
+        "realtime": {
+          "timewindowMs": 60000
+        }
+      },
+      "showTitle": false,
+      "backgroundColor": "#886657",
+      "color": "rgba(0, 0, 0, 0.87)",
+      "padding": "0px",
+      "settings": {
+        "maxValue": 50,
+        "minValue": 0,
+        "donutStartAngle": 90,
+        "showValue": true,
+        "showMinMax": true,
+        "gaugeWidthScale": 5,
+        "levelColors": [],
+        "titleFont": {
+          "family": "Roboto",
+          "size": 12,
+          "style": "normal",
+          "weight": "500",
+          "color": "#999999"
+        },
+        "labelFont": {
+          "family": "Roboto",
+          "size": 8,
+          "style": "normal",
+          "weight": "500",
+          "color": "#ffffff"
+        },
+        "valueFont": {
+          "family": "Roboto",
+          "style": "normal",
+          "weight": "500",
+          "size": 12,
+          "color": "#ffffff"
+        },
+        "minMaxFont": {
+          "family": "Roboto",
+          "size": 8,
+          "style": "normal",
+          "weight": "500",
+          "color": "#666666"
+        },
+        "neonGlowBrightness": 0,
+        "dashThickness": 1,
+        "gaugeColor": "#eeeeee",
+        "showTitle": true,
+        "gaugeType": "verticalBar",
+        "timestampFormat": "yyyy-MM-dd HH:mm:ss",
+        "animation": true,
+        "animationDuration": 500,
+        "animationRule": "linear",
+        "title": "Soil Temperature",
+        "unitTitle": "C",
+        "showUnitTitle": true,
+        "roundedLineCap": false,
+        "showTimestamp": false,
+        "useFixedLevelColor": true,
+        "showTicks": false,
+        "fixedLevelColors": [
+          {
+            "from": {
+              "valueSource": "predefinedValue",
+              "value": 0
+            },
+            "to": {
+              "valueSource": "predefinedValue",
+              "value": 15
+            },
+            "color": "#00d3ff"
+          },
+          {
+            "from": {
+              "valueSource": "predefinedValue",
+              "value": 14
+            },
+            "to": {
+              "valueSource": "predefinedValue",
+              "value": 25
+            },
+            "color": "#49ff00"
+          },
+          {
+            "from": {
+              "valueSource": "predefinedValue",
+              "value": 26
+            },
+            "to": {
+              "valueSource": "predefinedValue",
+              "value": 50
+            },
+            "color": "#ff0000"
+          }
+        ]
+      },
+      "title": "Soil Temperature",
+      "dropShadow": true,
+      "enableFullscreen": true,
+      "titleStyle": {
+        "fontSize": "16px",
+        "fontWeight": 400
+      },
+      "enableDataExport": true,
+      "widgetStyle": {},
+      "noDataDisplayMessage": "",
+      "showLegend": false,
+      "units": "º",
+      "widgetCss": ""
+    },
+    "row": 0,
+    "col": 0,
+    "id": "38d66ef9-ad63-d01b-c303-077227bf49c4"
+  },
+  "aliasesInfo": {
+    "datasourceAliases": {
+      "0": {
+        "alias": "TeaSpike",
+        "filter": {
+          "type": "singleEntity",
+          "resolveMultiple": false,
+          "singleEntity": {
+            "entityType": "DEVICE",
+            "id": "d170e200-836e-11ec-9cdc-97964cc3249d"
+          }
+        }
+      }
+    },
+    "targetDeviceAliases": {}
+  },
+  "filtersInfo": {
+    "datasourceFilters": {}
+  },
+  "originalSize": {
+    "sizeX": 6,
+    "sizeY": 5
+  },
+  "originalColumns": 24
+}

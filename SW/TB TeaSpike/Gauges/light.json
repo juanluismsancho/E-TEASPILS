@@ -1,0 +1,139 @@
+{
+  "widget": {
+    "isSystemType": true,
+    "bundleAlias": "digital_gauges",
+    "typeAlias": "vertical_bar_justgage",
+    "type": "latest",
+    "title": "New widget",
+    "image": null,
+    "description": null,
+    "sizeX": 2,
+    "sizeY": 3.5,
+    "config": {
+      "datasources": [
+        {
+          "type": "entity",
+          "name": null,
+          "entityAliasId": "5d42fd81-3cc7-d7a3-977d-d6cf1a4e8f40",
+          "filterId": null,
+          "dataKeys": [
+            {
+              "name": "light",
+              "type": "timeseries",
+              "label": "light",
+              "color": "#2196f3",
+              "settings": {},
+              "_hash": 0.2875422349197896
+            }
+          ]
+        }
+      ],
+      "timewindow": {
+        "realtime": {
+          "timewindowMs": 60000
+        }
+      },
+      "showTitle": false,
+      "backgroundColor": "#ffffff",
+      "color": "rgba(0, 0, 0, 0.87)",
+      "padding": "0px",
+      "settings": {
+        "maxValue": 10000,
+        "minValue": 0,
+        "donutStartAngle": 90,
+        "showValue": true,
+        "showMinMax": true,
+        "gaugeWidthScale": 1.5,
+        "levelColors": [
+          "rgba(255, 229, 0, 0.29)",
+          "#fff000"
+        ],
+        "titleFont": {
+          "family": "Roboto",
+          "size": 12,
+          "style": "oblique",
+          "weight": "500",
+          "color": "#3273ff"
+        },
+        "labelFont": {
+          "family": "Roboto",
+          "size": 8,
+          "style": "normal",
+          "weight": "500",
+          "color": "#4d4d4d"
+        },
+        "valueFont": {
+          "family": "Roboto",
+          "style": "normal",
+          "weight": "500",
+          "size": 12,
+          "color": "#383838"
+        },
+        "minMaxFont": {
+          "family": "Roboto",
+          "size": 8,
+          "style": "normal",
+          "weight": "500",
+          "color": "#666666"
+        },
+        "neonGlowBrightness": 0,
+        "dashThickness": 1.5,
+        "gaugeColor": "#000000",
+        "showTitle": true,
+        "gaugeType": "donut",
+        "timestampFormat": "yyyy-MM-dd HH:mm:ss",
+        "animation": true,
+        "animationDuration": 500,
+        "animationRule": "linear",
+        "defaultColor": "#000000",
+        "title": "Light",
+        "unitTitle": "lux",
+        "showUnitTitle": true,
+        "roundedLineCap": false,
+        "showTimestamp": false,
+        "useFixedLevelColor": false,
+        "showTicks": false
+      },
+      "title": "Light",
+      "dropShadow": true,
+      "enableFullscreen": true,
+      "titleStyle": {
+        "fontSize": "16px",
+        "fontWeight": 400
+      },
+      "enableDataExport": true,
+      "widgetStyle": {},
+      "decimals": 0,
+      "noDataDisplayMessage": "",
+      "showLegend": false,
+      "widgetCss": ""
+    },
+    "row": 0,
+    "col": 0,
+    "id": "85829aa6-25f7-ed86-d56d-ee5125ac0801"
+  },
+  "aliasesInfo": {
+    "datasourceAliases": {
+      "0": {
+        "alias": "TeaSpike",
+        "filter": {
+          "type": "singleEntity",
+          "resolveMultiple": false,
+          "singleEntity": {
+            "entityType": "DEVICE",
+            "id": "d170e200-836e-11ec-9cdc-97964cc3249d"
+          }
+        }
+      }
+    },
+    "targetDeviceAliases": {}
+  },
+  "filtersInfo": {
+    "datasourceFilters": {}
+  },
+  "originalSize": {
+    "sizeX": 6,
+    "sizeY": 5
+  },
+  "originalColumns": 24
+}

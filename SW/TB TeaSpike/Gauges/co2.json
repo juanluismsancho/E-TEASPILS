@@ -1,0 +1,206 @@
+{
+  "widget": {
+    "isSystemType": true,
+    "bundleAlias": "digital_gauges",
+    "typeAlias": "digital_vertical_bar",
+    "type": "latest",
+    "title": "New widget",
+    "image": null,
+    "description": null,
+    "sizeX": 2.5,
+    "sizeY": 4.5,
+    "config": {
+      "datasources": [
+        {
+          "type": "entity",
+          "name": null,
+          "entityAliasId": "5d42fd81-3cc7-d7a3-977d-d6cf1a4e8f40",
+          "filterId": null,
+          "dataKeys": [
+            {
+              "name": "co2",
+              "type": "timeseries",
+              "label": "co2",
+              "color": "#2196f3",
+              "settings": {},
+              "_hash": 0.5349605223112566
+            }
+          ]
+        }
+      ],
+      "timewindow": {
+        "realtime": {
+          "timewindowMs": 60000
+        }
+      },
+      "showTitle": false,
+      "backgroundColor": "#ffffff",
+      "color": "#323232",
+      "padding": "10px",
+      "settings": {
+        "donutStartAngle": 90,
+        "showValue": true,
+        "showMinMax": false,
+        "gaugeWidthScale": 1.5,
+        "levelColors": [
+          "#000000",
+          "#ffed48",
+          "#ff8300",
+          "#ff0000"
+        ],
+        "titleFont": {
+          "family": "Roboto",
+          "size": 12,
+          "style": "oblique",
+          "weight": "500"
+        },
+        "labelFont": {
+          "family": "Roboto",
+          "size": 6,
+          "style": "normal",
+          "weight": "500",
+          "color": "#444444"
+        },
+        "valueFont": {
+          "family": "Roboto",
+          "style": "normal",
+          "weight": "500",
+          "size": 11,
+          "color": "#444444"
+        },
+        "minMaxFont": {
+          "family": "Segment7Standard",
+          "size": 8,
+          "style": "normal",
+          "weight": "normal",
+          "color": "#cccccc"
+        },
+        "neonGlowBrightness": 0,
+        "showUnitTitle": true,
+        "gaugeColor": "#000000",
+        "gaugeType": "donut",
+        "showTitle": true,
+        "dashThickness": 5,
+        "animation": true,
+        "animationDuration": 500,
+        "animationRule": "linear",
+        "timestampFormat": "yyyy-MM-dd HH:mm:ss",
+        "minValue": 0,
+        "unitTitle": "PPM",
+        "title": "CO2",
+        "useFixedLevelColor": true,
+        "fixedLevelColors": [
+          {
+            "from": {
+              "valueSource": "predefinedValue",
+              "value": 0
+            },
+            "to": {
+              "valueSource": "predefinedValue",
+              "value": 600
+            },
+            "color": "#00ffde"
+          },
+          {
+            "from": {
+              "valueSource": "predefinedValue",
+              "value": 601
+            },
+            "to": {
+              "valueSource": "predefinedValue",
+              "value": 700
+            },
+            "color": "#1dff00"
+          },
+          {
+            "from": {
+              "valueSource": "predefinedValue",
+              "value": 701
+            },
+            "to": {
+              "valueSource": "predefinedValue",
+              "value": 900
+            },
+            "color": "#fffb00"
+          },
+          {
+            "from": {
+              "valueSource": "predefinedValue",
+              "value": 900
+            },
+            "to": {
+              "valueSource": "predefinedValue",
+              "value": 1200
+            },
+            "color": "#ff9900"
+          },
+          {
+            "from": {
+              "valueSource": "predefinedValue",
+              "value": 1201
+            },
+            "to": {
+              "valueSource": "predefinedValue",
+              "value": 10000
+            },
+            "color": "#ff0000"
+          }
+        ],
+        "showTicks": false,
+        "tickWidth": 4,
+        "colorTicks": "#666",
+        "maxValue": 1500,
+        "roundedLineCap": false,
+        "showTimestamp": false
+      },
+      "title": "CO2",
+      "dropShadow": false,
+      "enableFullscreen": false,
+      "titleStyle": {
+        "fontSize": "16px",
+        "fontWeight": 400
+      },
+      "widgetStyle": {},
+      "useDashboardTimewindow": true,
+      "showLegend": false,
+      "actions": {},
+      "enableDataExport": true,
+      "margin": "50",
+      "units": "",
+      "decimals": 0,
+      "noDataDisplayMessage": "",
+      "showTitleIcon": false,
+      "titleTooltip": "",
+      "titleIcon": "",
+      "iconColor": "rgba(0, 0, 0, 0.87)",
+      "iconSize": "24px"
+    },
+    "row": 0,
+    "col": 0,
+    "id": "f8eae519-fe9e-d8ac-5909-47e8c1f38aab"
+  },
+  "aliasesInfo": {
+    "datasourceAliases": {
+      "0": {
+        "alias": "TeaSpike",
+        "filter": {
+          "type": "singleEntity",
+          "resolveMultiple": false,
+          "singleEntity": {
+            "entityType": "DEVICE",
+            "id": "d170e200-836e-11ec-9cdc-97964cc3249d"
+          }
+        }
+      }
+    },
+    "targetDeviceAliases": {}
+  },
+  "filtersInfo": {
+    "datasourceFilters": {}
+  },
+  "originalSize": {
+    "sizeX": 6,
+    "sizeY": 5
+  },
+  "originalColumns": 24
+}

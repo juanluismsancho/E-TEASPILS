@@ -1,0 +1,49 @@
+if(metadata.deviceName=="BeWater") {
+    return ['BeWater'];
+}
+else if(metadata.deviceName=="Device TEASPILS") {
+    return ['TeaSpike'];
+}
+else return ['Unknown'];
+
+
+--------------------
+
+
+var co2 = Math.floor(Math.random()*1500);
+var humidity = Math.floor(Math.random()*100);
+var light = Math.floor(Math.random()*7000);
+var soilHumidity = Math.floor(Math.random()*100);
+var soilTemperature = Math.floor(Math.random()*50);
+var temperature = Math.floor(Math.random()*50);
+
+var msg = { co2: co2, humidity: humidity,light:light, soilHumidity:soilHumidity, soilTemperature:soilTemperature, temperature:temperature };
+var metadata = { deviceName: "Device TEASPILS" };
+var msgType = "POST_TELEMETRY_REQUEST";
+
+return { msg: msg, metadata: metadata, msgType: msgType };
+
+--------------------------------
+if (msg.co2>900){
+    if(msg.co2>1200){
+        return ['Danger'];
+    }
+    else return ['Warning'];
+}
+else return ['Ok'];
+
+
+-------------------
+
+var co2 = 750 + Math.floor(Math.random()*500);
+var humidity = 20 + Math.floor(Math.random()*45);
+var light =5000 + Math.floor(Math.random()*5000);
+var soilHumidity = 10+Math.floor(Math.random()*50);
+var soilTemperature = 17 + Math.floor(Math.random()*10);
+var temperature = 15 + Math.floor(Math.random()*15);
+
+var msg = { co2: co2, humidity: humidity,light:light, soilHumidity:soilHumidity, soilTemperature:soilTemperature, temperature:temperature };
+var metadata = { deviceName: "TeaSpike 1" };
+var msgType = "POST_TELEMETRY_REQUEST";
+
+return { msg: msg, metadata: metadata, msgType: msgType };

@@ -1,0 +1,225 @@
+{
+  "widget": {
+    "isSystemType": true,
+    "bundleAlias": "charts",
+    "typeAlias": "basic_timeseries",
+    "type": "timeseries",
+    "title": "New widget",
+    "image": null,
+    "description": null,
+    "sizeX": 8,
+    "sizeY": 5,
+    "config": {
+      "datasources": [
+        {
+          "type": "entity",
+          "name": null,
+          "entityAliasId": "5d42fd81-3cc7-d7a3-977d-d6cf1a4e8f40",
+          "filterId": null,
+          "dataKeys": [
+            {
+              "name": "co2",
+              "type": "timeseries",
+              "label": "co2",
+              "color": "#2196f3",
+              "settings": {
+                "excludeFromStacking": false,
+                "hideDataByDefault": false,
+                "disableDataHiding": false,
+                "removeFromLegend": false,
+                "showLines": true,
+                "fillLines": false,
+                "showPoints": false,
+                "showPointShape": "circle",
+                "pointShapeFormatter": "var size = radius * Math.sqrt(Math.PI) / 2;\nctx.moveTo(x - size, y - size);\nctx.lineTo(x + size, y + size);\nctx.moveTo(x - size, y + size);\nctx.lineTo(x + size, y - size);",
+                "showPointsLineWidth": 5,
+                "showPointsRadius": 3,
+                "showSeparateAxis": false,
+                "axisPosition": "left",
+                "thresholds": [
+                  {
+                    "thresholdValueSource": "predefinedValue"
+                  }
+                ],
+                "comparisonSettings": {
+                  "showValuesForComparison": true
+                }
+              },
+              "_hash": 0.7618399761723114,
+              "units": null,
+              "decimals": null,
+              "funcBody": null,
+              "usePostProcessing": true,
+              "postFuncBody": "return value/10;"
+            },
+            {
+              "name": "humidity",
+              "type": "timeseries",
+              "label": "humidity",
+              "color": "#4caf50",
+              "settings": {
+                "excludeFromStacking": false,
+                "hideDataByDefault": false,
+                "disableDataHiding": false,
+                "removeFromLegend": false,
+                "showLines": true,
+                "fillLines": false,
+                "showPoints": false,
+                "showPointShape": "circle",
+                "pointShapeFormatter": "var size = radius * Math.sqrt(Math.PI) / 2;\nctx.moveTo(x - size, y - size);\nctx.lineTo(x + size, y + size);\nctx.moveTo(x - size, y + size);\nctx.lineTo(x + size, y - size);",
+                "showPointsLineWidth": 5,
+                "showPointsRadius": 3,
+                "tooltipValueFormatter": "",
+                "showSeparateAxis": false,
+                "axisTitle": "",
+                "axisPosition": "left",
+                "axisTicksFormatter": "",
+                "thresholds": [
+                  {
+                    "thresholdValueSource": "predefinedValue"
+                  }
+                ],
+                "comparisonSettings": {
+                  "showValuesForComparison": true,
+                  "comparisonValuesLabel": "",
+                  "color": ""
+                }
+              },
+              "_hash": 0.25951645432011694
+            },
+            {
+              "name": "temperature",
+              "type": "timeseries",
+              "label": "temperature",
+              "color": "#f44336",
+              "settings": {
+                "excludeFromStacking": false,
+                "hideDataByDefault": false,
+                "disableDataHiding": false,
+                "removeFromLegend": false,
+                "showLines": true,
+                "fillLines": false,
+                "showPoints": false,
+                "showPointShape": "circle",
+                "pointShapeFormatter": "var size = radius * Math.sqrt(Math.PI) / 2;\nctx.moveTo(x - size, y - size);\nctx.lineTo(x + size, y + size);\nctx.moveTo(x - size, y + size);\nctx.lineTo(x + size, y - size);",
+                "showPointsLineWidth": 5,
+                "showPointsRadius": 3,
+                "tooltipValueFormatter": "",
+                "showSeparateAxis": false,
+                "axisTitle": "",
+                "axisPosition": "left",
+                "axisTicksFormatter": "",
+                "thresholds": [
+                  {
+                    "thresholdValueSource": "predefinedValue"
+                  }
+                ],
+                "comparisonSettings": {
+                  "showValuesForComparison": true,
+                  "comparisonValuesLabel": "",
+                  "color": ""
+                }
+              },
+              "_hash": 0.16336484659835349
+            }
+          ]
+        }
+      ],
+      "timewindow": {
+        "realtime": {
+          "timewindowMs": 60000
+        }
+      },
+      "showTitle": true,
+      "backgroundColor": "#fff",
+      "color": "rgba(0, 0, 0, 0.87)",
+      "padding": "8px",
+      "settings": {
+        "shadowSize": 4,
+        "fontColor": "#545454",
+        "fontSize": 10,
+        "xaxis": {
+          "showLabels": true,
+          "color": "#545454"
+        },
+        "yaxis": {
+          "showLabels": true,
+          "color": "#545454",
+          "tickDecimals": 0
+        },
+        "grid": {
+          "color": "#545454",
+          "tickColor": "#DDDDDD",
+          "verticalLines": true,
+          "horizontalLines": true,
+          "outlineWidth": 1
+        },
+        "stack": false,
+        "tooltipIndividual": false,
+        "smoothLines": false,
+        "tooltipCumulative": false,
+        "hideZeros": false,
+        "showTooltip": true,
+        "comparisonEnabled": false,
+        "timeForComparison": "previousInterval",
+        "xaxisSecond": {
+          "axisPosition": "top",
+          "showLabels": true
+        },
+        "customLegendEnabled": true,
+        "dataKeysListForLabels": []
+      },
+      "title": "General Ambient Report",
+      "dropShadow": true,
+      "enableFullscreen": true,
+      "titleStyle": {
+        "fontSize": "16px",
+        "fontWeight": 400
+      },
+      "useDashboardTimewindow": true,
+      "showTitleIcon": false,
+      "titleTooltip": "",
+      "enableDataExport": true,
+      "widgetStyle": {},
+      "widgetCss": "",
+      "noDataDisplayMessage": "",
+      "showLegend": true,
+      "legendConfig": {
+        "direction": "column",
+        "position": "bottom",
+        "sortDataKeys": false,
+        "showMin": true,
+        "showMax": true,
+        "showAvg": true,
+        "showTotal": false
+      }
+    },
+    "row": 0,
+    "col": 0,
+    "id": "ccf00794-946d-43e7-5220-c62a11850dbd"
+  },
+  "aliasesInfo": {
+    "datasourceAliases": {
+      "0": {
+        "alias": "TeaSpike",
+        "filter": {
+          "type": "singleEntity",
+          "resolveMultiple": false,
+          "singleEntity": {
+            "entityType": "DEVICE",
+            "id": "d170e200-836e-11ec-9cdc-97964cc3249d"
+          }
+        }
+      }
+    },
+    "targetDeviceAliases": {}
+  },
+  "filtersInfo": {
+    "datasourceFilters": {}
+  },
+  "originalSize": {
+    "sizeX": 17,
+    "sizeY": 5
+  },
+  "originalColumns": 24
+}
